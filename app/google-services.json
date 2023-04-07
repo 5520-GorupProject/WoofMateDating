@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "859586608667",
+    "project_id": "woofmatedating",
+    "storage_bucket": "woofmatedating.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859586608667:android:8839ebcf2825d375ed02be",
+        "android_client_info": {
+          "package_name": "com.example.woofmatedating"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "859586608667-vrnek6o7asdc1ltu5g61474gp4bv8l7i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.woofmatedating",
+            "certificate_hash": "606f3e36d67308596221b6d843025499007993f6"
+          }
+        },
+        {
+          "client_id": "859586608667-ilpecqrmc4a33rhs5c7p18v7af5e71j3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxWUHh2TIDjkbQAp9d2kGVI3H2WjC7glk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "859586608667-ilpecqrmc4a33rhs5c7p18v7af5e71j3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

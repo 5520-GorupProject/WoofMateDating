@@ -1,11 +1,11 @@
 package com.example.woofmatedating;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
