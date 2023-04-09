@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,13 +22,20 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayList<String> al;
-    private ArrayAdapter<String> arrayAdapter;
+    private cards cards_data[];
+    //  private ArrayList<String> al;
+    private arrayAdapter arrayAdapter;
     private int i;
     private FirebaseAuth mAuth;
+    private String currentUId;
+
+    ListView listView;
+    List<cards> rowItems;
+
 
    /* @InjectView(R.id.frame)
     SwipeFlingAdapterView flingContainer;*/
@@ -40,12 +48,14 @@ public class MainActivity extends AppCompatActivity {
         //ButterKnife.inject(this);
 
         mAuth = FirebaseAuth.getInstance();
+        currentUId = mAuth.getCurrentUser().getUid();
+
         checkUserSex();
 
-        al = new ArrayList<>();
+        rowItems = new ArrayList<cards>();
 
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al );
+        arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems);
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
@@ -55,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
-                al.remove(0);
+                rowItems.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
 
@@ -69,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                Toast.makeText(MainActivity.this,"Right",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Right", Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -106,13 +116,14 @@ public class MainActivity extends AppCompatActivity {
 
     private String userSex;
     private String oppositeUserSex;
-    public void checkUserSex(){
+
+    public void checkUserSex() {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference maleDb = FirebaseDatabase.getInstance().getReference().child("Users").child("Male");
         maleDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getKey().equals(user.getUid())){
+                if (snapshot.getKey().equals(user.getUid())) {
                     userSex = "Male";
                     oppositeUserSex = "Female";
                     getOppositeSexUsers();
@@ -144,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         femaleDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.getKey().equals(user.getUid())){
+                if (snapshot.getKey().equals(user.getUid())) {
                     userSex = "Female";
                     oppositeUserSex = "Male";
                     getOppositeSexUsers();
@@ -173,13 +184,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void getOppositeSexUsers(){
+    public void getOppositeSexUsers() {
         DatabaseReference oppositeSexDb = FirebaseDatabase.getInstance().getReference().child("Users").child(oppositeUserSex);
         oppositeSexDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.exists()){
-                    al.add(Objects.requireNonNull(snapshot.child("name").getValue()).toString());
+                if (snapshot.exists()) {
+                    cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString());
+                    rowItems.add(item);
                     arrayAdapter.notifyDataSetChanged();
                 }
             }
