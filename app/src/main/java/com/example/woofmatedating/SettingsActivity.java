@@ -110,7 +110,7 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                     if(map.get("profileImageUrl")!=null){
                         profileImageUrl = map.get("profileImageUrl").toString();
-//                        Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                        //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
 
                     }
 
@@ -168,14 +168,14 @@ public class SettingsActivity extends AppCompatActivity {
                     });
 
 
-//                    Uri downloadUrl = taskSnapshot.etg();
-//
-//                    Map userInfo = new HashMap();
-//                    userInfo.put("profileImageUrl", downloadUrl.toString());
-//                    mCustomerDatabase.updateChildren(userInfo);
-//
-//                    finish();
-//                    return;
+/*                    Uri downloadUrl = taskSnapshot.etg();
+
+                    Map userInfo = new HashMap();
+                    userInfo.put("profileImageUrl", downloadUrl.toString());
+                   mCustomerDatabase.updateChildren(userInfo);
+
+                    finish();
+                    return;*/
                 }
             });
 
