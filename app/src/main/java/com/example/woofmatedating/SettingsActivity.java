@@ -108,9 +108,18 @@ public class SettingsActivity extends AppCompatActivity {
                         phone = map.get("phone").toString();
                         mPhoneField.setText(phone);
                     }
+
                     if(map.get("profileImageUrl")!=null){
                         profileImageUrl = map.get("profileImageUrl").toString();
-                        //Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                        switch (profileImageUrl) {
+                            case "default":
+                                Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(mProfileImage);
+                                break;
+                            default:
+                                Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                                break;
+
+                        }
 
                     }
 
@@ -191,7 +200,6 @@ public class SettingsActivity extends AppCompatActivity {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
-
         }
     }
 
