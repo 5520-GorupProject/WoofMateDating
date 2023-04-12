@@ -15,6 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+
+
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -34,6 +39,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity {
+
 
     private EditText mNameField, mPhoneField;
 
@@ -123,7 +129,7 @@ public class SettingsActivity extends AppCompatActivity {
         mCustomerDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
+                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0){
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                     if(map.get("name")!=null){
                         name = map.get("name").toString();
