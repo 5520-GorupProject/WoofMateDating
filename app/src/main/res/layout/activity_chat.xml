@@ -27,6 +27,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
         <EditText
+            android:id="@+id/message"
             android:layout_weight="0.8"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
