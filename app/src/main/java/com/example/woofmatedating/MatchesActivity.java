@@ -35,7 +35,6 @@ public class MatchesActivity extends AppCompatActivity {
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(true);
 
-
         mMatchesLayoutManager = new LinearLayoutManager(MatchesActivity.this);
         mRecyclerView.setLayoutManager(mMatchesLayoutManager);
         mMatchesAdapter = new MatchesAdapter(getDataSetMatches(), MatchesActivity.this);
@@ -44,7 +43,7 @@ public class MatchesActivity extends AppCompatActivity {
         getUserMatchId();
         
 //        for(int i = 0; i< 100; i++){
-//            MatchesObject obj = new MatchesObject(Integer.toString(i));
+//            ChatObject obj = new ChatObject(Integer.toString(i));
 //            resultsMatches.add(obj);
 //        }
 //
