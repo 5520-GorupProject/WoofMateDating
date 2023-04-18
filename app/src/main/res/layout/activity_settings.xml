@@ -21,7 +21,7 @@
 
         <ImageView
             android:id="@+id/profileImage"
-            android:layout_width="100sp"
+            android:layout_width="169dp"
             android:layout_height="100sp"
             android:layout_marginBottom="20sp"
             android:src="@mipmap/ic_launcher" />
@@ -41,6 +41,30 @@
             android:hint="Phone"
             android:layout_marginBottom="20sp"
             android:inputType="phone"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/age"
+            android:background="@null"
+            android:hint="Age"
+            android:layout_marginBottom="20sp"
+            android:inputType="text"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/race"
+            android:background="@null"
+            android:hint="Race"
+            android:layout_marginBottom="20sp"
+            android:inputType="text"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:id="@+id/bio"
+            android:background="@null"
+            android:hint="Bio"
+            android:layout_marginBottom="20sp"
+            android:inputType="text"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

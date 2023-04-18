@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private EditText mNameField, mPhoneField;
+    private EditText mNameField, mPhoneField, mRaceField, mAgeField, mBioField;
 
     private Button mBack, mConfirm;
 
@@ -44,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
 
-    private String userId, name, phone, profileImageUrl, userSex;
+    private String userId, name, phone, profileImageUrl, userSex, race, age, bio;
 
     private Uri resultUri;
 
@@ -56,6 +56,10 @@ public class SettingsActivity extends AppCompatActivity {
         // String userSex = getIntent().getExtras().getString("userSex");
         mNameField = (EditText) findViewById(R.id.name);
         mPhoneField = (EditText) findViewById(R.id.phone);
+        mAgeField = (EditText) findViewById(R.id.age);
+        mRaceField = (EditText) findViewById(R.id.race);
+        mBioField = (EditText) findViewById(R.id.bio);
+
 
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
 
@@ -133,6 +137,18 @@ public class SettingsActivity extends AppCompatActivity {
                         phone = map.get("phone").toString();
                         mPhoneField.setText(phone);
                     }
+                    if(map.get("age")!=null){
+                        age = map.get("age").toString();
+                        mAgeField.setText(age);
+                    }
+                    if(map.get("race")!=null){
+                        race = map.get("race").toString();
+                        mRaceField.setText(race);
+                    }
+                    if(map.get("bio")!=null){
+                        bio = map.get("bio").toString();
+                        mBioField.setText(bio);
+                    }
                     if(map.get("sex")!=null){
                         userSex = map.get("sex").toString();
                     }
@@ -163,9 +179,15 @@ public class SettingsActivity extends AppCompatActivity {
     private void saveUserInformation() {
         name = mNameField.getText().toString();
         phone = mPhoneField.getText().toString();
+        age = mAgeField.getText().toString();
+        race = mRaceField.getText().toString();
+        bio = mBioField.getText().toString();
         Map userInfo = new HashMap();
         userInfo.put("name", name);
         userInfo.put("phone", phone);
+        userInfo.put("age", age);
+        userInfo.put("race", race);
+        userInfo.put("bio", bio);
         mUserDatabase.updateChildren(userInfo);
 
         if(resultUri != null){
