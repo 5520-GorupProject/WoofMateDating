@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                         if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
                             profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
                         }
-                        cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), profileImageUrl);
+                        cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), snapshot.child("age").getValue().toString(), snapshot.child("race").getValue().toString(), snapshot.child("bio").getValue().toString(), profileImageUrl);
                         rowItems.add(item);
                         arrayAdapter.notifyDataSetChanged();
                     }
