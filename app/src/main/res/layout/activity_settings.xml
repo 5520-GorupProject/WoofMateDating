@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity">
 
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="409dp"
         android:layout_height="729dp"
         android:orientation="vertical"
@@ -27,54 +27,69 @@
             android:src="@mipmap/ic_launcher" />
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/name"
-            android:background="@null"
-            android:hint="Name"
-            android:layout_marginBottom="20sp"/>
-        <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
+            android:background="@null"
+            android:hint="Name" />
+
+        <EditText
             android:id="@+id/phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
             android:background="@null"
             android:hint="Phone"
-            android:layout_marginBottom="20sp"
-            android:inputType="phone"/>
+            android:inputType="phone" />
+
         <EditText
+            android:id="@+id/age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/age"
+            android:layout_marginBottom="20sp"
             android:background="@null"
             android:hint="Age"
-            android:layout_marginBottom="20sp"
-            android:inputType="text"/>
+            android:inputType="text" />
+
         <EditText
+            android:id="@+id/race"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/race"
+            android:layout_marginBottom="20sp"
             android:background="@null"
             android:hint="Race"
-            android:layout_marginBottom="20sp"
-            android:inputType="text"/>
+            android:inputType="text" />
+
         <EditText
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20sp"
+            android:background="@null"
+            android:hint="Location"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/bio"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:id="@+id/bio"
+            android:layout_marginBottom="20sp"
             android:background="@null"
             android:hint="Bio"
-            android:layout_marginBottom="20sp"
-            android:inputType="text"/>
+            android:inputType="text" />
+
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/confirm"
-            android:text="confirm"/>
-        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="confirm" />
+
+        <Button
             android:id="@+id/back"
-            android:text="back"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="back" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

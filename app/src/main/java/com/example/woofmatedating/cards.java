@@ -2,16 +2,17 @@ package com.example.woofmatedating;
 
 public class cards {
     private String userId;
-    private String name, age, race, bio;
+    private String name, age, race, bio, location;
     private String profileImageUrl;
 
-    public cards (String userId, String name, String age, String race, String bio, String profileImageUrl){
+    public cards (String userId, String name, String age, String race, String bio, String location, String profileImageUrl){
         this.userId = userId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
         this.age = age;
         this.race = race;
         this.bio = bio;
+        this.location = location;
     }
 
     public String getUserId(){
@@ -24,6 +25,8 @@ public class cards {
     public String getAge(){
         return age;
     }
+
+    public String getLocation() {return location;}
 
     public String getRace(){
         return race;
