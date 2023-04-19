@@ -68,6 +68,15 @@ public class ChatActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
+
+        Button mGoBackButton = findViewById(R.id.goBackButton);
+        mGoBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                return;
+            }
+        });
     }
 
     private void sendMessage() {
