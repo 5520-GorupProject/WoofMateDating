@@ -1,6 +1,8 @@
 package com.example.woofmatedating;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -35,7 +37,7 @@ import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private EditText mNameField, mPhoneField, mRaceField, mAgeField, mBioField;
+    private EditText mNameField, mPhoneField, mRaceField, mAgeField, mBioField, mLocationField;
 
     private Button mBack, mConfirm;
 
@@ -44,7 +46,7 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDatabase;
 
-    private String userId, name, phone, profileImageUrl, userSex, race, age, bio;
+    private String userId, name, phone, profileImageUrl, userSex, race, age, bio, location;
 
     private Uri resultUri;
 
@@ -59,6 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
         mAgeField = (EditText) findViewById(R.id.age);
         mRaceField = (EditText) findViewById(R.id.race);
         mBioField = (EditText) findViewById(R.id.bio);
+        mLocationField = (EditText) findViewById(R.id.location);
 
 
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
@@ -99,10 +102,11 @@ public class SettingsActivity extends AppCompatActivity {
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK);
+                /*Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, 1);*/
                 // resultLauncher.launch(intent);
+                showPhotoAccessWarning();
             }
         });
         
@@ -123,6 +127,31 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    private void showPhotoAccessWarning() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Access Photos")
+                .setMessage("Woofmate Dating would like to access your photos. Do you want to allow access?")
+                .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        openGallery();
+                    }
+                })
+                .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 1);
+    }
+
     private void getUserInfo() {
         mUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -132,6 +161,10 @@ public class SettingsActivity extends AppCompatActivity {
                     if(map.get("name")!=null){
                         name = map.get("name").toString();
                         mNameField.setText(name);
+                    }
+                    if(map.get("location")!=null){
+                        location = map.get("location").toString();
+                        mLocationField.setText(location);
                     }
                     if(map.get("phone")!=null){
                         phone = map.get("phone").toString();
@@ -182,12 +215,14 @@ public class SettingsActivity extends AppCompatActivity {
         age = mAgeField.getText().toString();
         race = mRaceField.getText().toString();
         bio = mBioField.getText().toString();
+        location = mLocationField.getText().toString();
         Map userInfo = new HashMap();
         userInfo.put("name", name);
         userInfo.put("phone", phone);
         userInfo.put("age", age);
         userInfo.put("race", race);
         userInfo.put("bio", bio);
+        userInfo.put("location", location);
         mUserDatabase.updateChildren(userInfo);
 
         if(resultUri != null){

@@ -192,7 +192,20 @@ public class MainActivity extends AppCompatActivity {
                         if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
                             profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
                         }
-                        cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), snapshot.child("age").getValue().toString(), snapshot.child("race").getValue().toString(), snapshot.child("bio").getValue().toString(), profileImageUrl);
+                        String userId = snapshot.getKey();
+                        String name = snapshot.child("name").getValue() != null ? snapshot.child("name").getValue().toString() : "";
+                        String age = snapshot.child("age").getValue() != null ? snapshot.child("age").getValue().toString() : "";
+                        String race = snapshot.child("race").getValue() != null ? snapshot.child("race").getValue().toString() : "";
+                        String bio = snapshot.child("bio").getValue() != null ? snapshot.child("bio").getValue().toString() : "";
+                        String location = snapshot.child("location").getValue() != null ? snapshot.child("location").getValue().toString() : "";
+
+                        if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
+                            profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                        }
+
+                        cards item = new cards(userId, name, age, race, bio, location, profileImageUrl);
+
+                        // cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), snapshot.child("age").getValue().toString(), snapshot.child("race").getValue().toString(), snapshot.child("bio").getValue().toString(), snapshot.child("location").getValue().toString(), profileImageUrl);
                         rowItems.add(item);
                         arrayAdapter.notifyDataSetChanged();
                     }
