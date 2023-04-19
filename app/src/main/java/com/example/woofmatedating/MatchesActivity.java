@@ -1,11 +1,15 @@
 package com.example.woofmatedating;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,10 +27,36 @@ public class MatchesActivity extends AppCompatActivity {
 
     private String cusrrentUserID;
 
+    BottomNavigationView nav;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matches);
+
+        nav = findViewById(R.id.navBar);
+        nav.setSelectedItemId(R.id.chat);
+        nav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.chat:
+                        return true;
+
+                    case R.id.setting:
+                        Intent intent1 = new Intent(getApplicationContext(), SettingsActivity.class);
+                        startActivity(intent1);
+                        return true;
+
+                    case R.id.home:
+                        Intent intent2 = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent2);
+                        return true;
+                }
+
+                return false;
+            }
+        });
 
         cusrrentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 

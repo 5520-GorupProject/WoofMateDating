@@ -3,6 +3,7 @@ package com.example.woofmatedating;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -39,15 +41,41 @@ public class MainActivity extends AppCompatActivity {
     List<cards> rowItems;
 
 
+
+
    /* @InjectView(R.id.frame)
     SwipeFlingAdapterView flingContainer;*/
 
 
+    BottomNavigationView nav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //ButterKnife.inject(this);
+        nav = findViewById(R.id.navBar);
+        nav.setSelectedItemId(R.id.home);
+        nav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        return true;
+
+                    case R.id.setting:
+                        Intent intent1 = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(intent1);
+                        return true;
+
+                    case R.id.chat:
+                        Intent intent2 = new Intent(MainActivity.this, MatchesActivity.class);
+                        startActivity(intent2);
+                        return true;
+                }
+
+                return false;
+            }
+        });
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
 
@@ -242,16 +270,16 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
-    public void goToSettings(View view) {
-        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-        startActivity(intent);
-
-    }
-
-    public void goToMatches(View view) {
-        Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
-        startActivity(intent);
-        return;
-    }
+//    public void goToSettings(View view) {
+//        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+//        startActivity(intent);
+//
+//    }
+//
+//    public void goToMatches(View view) {
+//        Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
+//        startActivity(intent);
+//        return;
+//    }
 
 }
