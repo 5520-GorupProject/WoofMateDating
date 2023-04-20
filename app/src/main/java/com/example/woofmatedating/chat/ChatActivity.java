@@ -95,64 +95,81 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void getChatId(){
-        mDatabaseUser.addListenerForSingleValueEvent(new ValueEventListener() {
+        new Thread(new Runnable() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    chatId = snapshot.getValue().toString();
-                    mDatabaseChat = mDatabaseChat.child(chatId);
-                    getChatMessages();
-                }
-            }
+            public void run() {
+                mDatabaseUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()){
+                            chatId = snapshot.getValue().toString();
+                            mDatabaseChat = mDatabaseChat.child(chatId);
+                            getChatMessages();
+                        }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                });
             }
-        });
+        }).start();
     }
 
     private void getChatMessages() {
-        mDatabaseChat.addChildEventListener(new ChildEventListener() {
+        new Thread(new Runnable() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if(dataSnapshot.exists()){
-                    String message = null;
-                    String createdByUser = null;
+            public void run() {
+                mDatabaseChat.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        if(dataSnapshot.exists()){
+                            String message = null;
+                            String createdByUser = null;
 
-                    if(dataSnapshot.child("text").getValue()!=null){
-                        message = dataSnapshot.child("text").getValue().toString();
-                    }
-                    if(dataSnapshot.child("createdByUser").getValue()!=null){
-                        createdByUser = dataSnapshot.child("createdByUser").getValue().toString();
-                    }
+                            if(dataSnapshot.child("text").getValue()!=null){
+                                message = dataSnapshot.child("text").getValue().toString();
+                            }
+                            if(dataSnapshot.child("createdByUser").getValue()!=null){
+                                createdByUser = dataSnapshot.child("createdByUser").getValue().toString();
+                            }
 
-                    if(message!=null && createdByUser!=null){
-                        Boolean currentUserBoolean = false;
-                        if(createdByUser.equals(currentUserID)){
-                            currentUserBoolean = true;
+                            if(message!=null && createdByUser!=null){
+                                Boolean currentUserBoolean = false;
+                                if(createdByUser.equals(currentUserID)){
+                                    currentUserBoolean = true;
+                                }
+                                ChatObject newMessage = new ChatObject(message, currentUserBoolean);
+                                resultsChat.add(newMessage);
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mChatAdapter.notifyDataSetChanged();
+                                    }
+                                });
+                            }
                         }
-                        ChatObject newMessage = new ChatObject(message, currentUserBoolean);
-                        resultsChat.add(newMessage);
-                        mChatAdapter.notifyDataSetChanged();
                     }
-                }
 
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    }
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                    }
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
             }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+        }).start();
     }
+
 
     private ArrayList<ChatObject> resultsChat = new ArrayList<ChatObject>();
     private List<ChatObject> getDataSetChat() {
