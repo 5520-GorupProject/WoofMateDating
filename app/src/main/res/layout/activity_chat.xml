@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".chat.ChatActivity">
+
     <Button
+        android:id="@+id/goBackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/goBackButton"
         android:text="Back"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
+        android:id="@+id/nestedScrollView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/sendLayout">
+        android:layout_marginBottom="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scrollbars="vertical">
 
@@ -27,24 +33,25 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <LinearLayout
-        android:id="@+id/sendLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-        <EditText
-            android:id="@+id/message"
-            android:layout_weight="0.8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="input message"/>
-        <Button
-            android:id="@+id/send"
-            android:layout_weight="0.2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Send"/>
-    </LinearLayout>
 
-</RelativeLayout>
+    <EditText
+        android:id="@+id/message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:hint="input message"
+        app:layout_constraintEnd_toStartOf="@+id/send"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />
+
+    <Button
+        android:id="@+id/send"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        app:layout_constraintBaseline_toBaselineOf="@+id/message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/message" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

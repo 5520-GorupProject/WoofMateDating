@@ -24,19 +24,22 @@
             android:layout_height="wrap_content"
             android:text="Female" />
     </RadioGroup>
+
     <EditText
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="email"
-        android:id="@+id/email"/>
+        android:hint="email format: xxx@xxx.com" />
+
     <EditText
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="password"
-        android:id="@+id/password"/>
+        android:hint="password must be more than 6 digits" />
+
     <Button
+        android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register"
-        android:id="@+id/register"/>
+        android:text="Register" />
 </LinearLayout>
