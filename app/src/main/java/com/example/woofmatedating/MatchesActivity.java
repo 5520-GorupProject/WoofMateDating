@@ -103,34 +103,44 @@ public class MatchesActivity extends AppCompatActivity {
 
     private void FetchMatchInformation(String key) {
         DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("Users").child(key);
-        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+        new Thread(new Runnable() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    String userId = dataSnapshot.getKey();
-                    String name = "";
-                    String profileImageUrl = "";
-                    if(dataSnapshot.child("name").getValue()!=null){
-                        name = dataSnapshot.child("name").getValue().toString();
+            public void run() {
+                userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+                            String userId = dataSnapshot.getKey();
+                            String name = "";
+                            String profileImageUrl = "";
+                            if(dataSnapshot.child("name").getValue()!=null){
+                                name = dataSnapshot.child("name").getValue().toString();
+                            }
+                            if(dataSnapshot.child("profileImageUrl").getValue()!=null){
+                                profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
+                            }
+
+                            MatchesObject obj = new MatchesObject(userId, name, profileImageUrl);
+                            resultsMatches.add(obj);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mMatchesAdapter.notifyDataSetChanged();
+                                }
+                            });
+                        }
                     }
-                    if(dataSnapshot.child("profileImageUrl").getValue()!=null){
-                        profileImageUrl = dataSnapshot.child("profileImageUrl").getValue().toString();
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
                     }
-
-
-                    MatchesObject obj = new MatchesObject(userId, name, profileImageUrl);
-                    resultsMatches.add(obj);
-                    mMatchesAdapter.notifyDataSetChanged();
-                }
+                });
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
+        }).start();
     }
+
 
     private ArrayList<MatchesObject> resultsMatches = new ArrayList<MatchesObject>();
     private List<MatchesObject> getDataSetMatches() {

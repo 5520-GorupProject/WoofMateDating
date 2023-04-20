@@ -146,7 +146,9 @@ public class ChatActivity extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        mChatAdapter.notifyDataSetChanged();
+                                        //更新recyclerview
+                                        mChatAdapter.notifyItemInserted(resultsChat.size() - 1);
+                                        mRecyclerView.scrollToPosition(resultsChat.size() - 1);
                                     }
                                 });
                             }
