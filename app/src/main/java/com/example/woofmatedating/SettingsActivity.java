@@ -130,10 +130,16 @@ public class SettingsActivity extends AppCompatActivity {
     private void showPhotoAccessWarning() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Access Photos")
-                .setMessage("Woofmate Dating would like to access your photos. Do you want to allow access?")
+                .setMessage("WoofMate would like to access your photos. Do you want to allow access?")
                 .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        openGallery();
+                        // 在单独的线程中打开图库
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                openGallery();
+                            }
+                        }).start();
                     }
                 })
                 .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
@@ -195,8 +201,6 @@ public class SettingsActivity extends AppCompatActivity {
                                 Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
                                 break;
                         }
-
-
                     }
 
                 }
@@ -226,53 +230,48 @@ public class SettingsActivity extends AppCompatActivity {
         mUserDatabase.updateChildren(userInfo);
 
         if(resultUri != null){
-            StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
-            Bitmap bitmap = null;
-
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-            byte[] data = baos.toByteArray();
-            UploadTask uploadTask = filepath.putBytes(data);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
+            // 在单独的线程中上传图像
+            new Thread(new Runnable() {
                 @Override
-                public void onFailure(@NonNull Exception e) {
-                    finish();
-                }
-            });
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
-                    firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                public void run() {
+                    StorageReference filepath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
+                    Bitmap bitmap = null;
+
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+                    byte[] data = baos.toByteArray();
+                    UploadTask uploadTask = filepath.putBytes(data);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
-                        public void onSuccess(Uri downloadUrl) {
-                            Map userInfo = new HashMap();
-                            userInfo.put("profileImageUrl", downloadUrl.toString());
-                            mUserDatabase.updateChildren(userInfo);
+                        public void onFailure(@NonNull Exception e) {
                             finish();
                             return;
                         }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Task<Uri> firebaseUri = taskSnapshot.getStorage().getDownloadUrl();
+                            firebaseUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    Map newImage = new HashMap();
+                                    newImage.put("profileImageUrl", uri.toString());
+                                    mUserDatabase.updateChildren(newImage);
+                                    finish();
+                                    return;
+                                }
+                            });
+                        }
                     });
-
-
-//                    Uri downloadUrl = taskSnapshot.etg();
-//
-//                    Map userInfo = new HashMap();
-//                    userInfo.put("profileImageUrl", downloadUrl.toString());
-//                    mCustomerDatabase.updateChildren(userInfo);
-//
-//                    finish();
-//                    return;
                 }
-            });
-
-        }else {
+            }).start();
+        } else {
             finish();
         }
     }

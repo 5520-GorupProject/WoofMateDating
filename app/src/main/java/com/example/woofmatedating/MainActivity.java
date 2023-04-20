@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
         rowItems = new ArrayList<cards>();
 
-
         arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems);
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 usersDb.child(userId).child("connections").child("dislike").child(currentUId).setValue(true);
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                Toast.makeText(MainActivity.this, "Left", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Left Dislike", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                 String userId = obj.getUserId();
                 usersDb.child(userId).child("connections").child("like").child(currentUId).setValue(true);
                 isConnectionMatch(userId);
-                Toast.makeText(MainActivity.this, "Right", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Right Like", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -144,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
     private void isConnectionMatch(String userId) {
@@ -153,7 +151,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
-                    Toast.makeText(MainActivity.this, "new Connection", Toast.LENGTH_LONG).show();
+                    //这里把toast换成提示框
+                    //Chat now？yes进入matches页面，no不动
+                    Toast.makeText(MainActivity.this, "New Connection！", Toast.LENGTH_LONG).show();
 
                     String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
 
@@ -183,85 +183,98 @@ public class MainActivity extends AppCompatActivity {
     private String oppositeUserSex;
 
     public void checkUserSex(){
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userDb = usersDb.child(user.getUid());
-        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    if (dataSnapshot.child("sex").getValue() != null){
-                        userSex = dataSnapshot.child("sex").getValue().toString();
-                        switch (userSex){
-                            case "Male":
-                                oppositeUserSex = "Female";
-                                break;
-                            case "Female":
-                                oppositeUserSex = "Male";
-                                break;
+            public void run() {
+                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                DatabaseReference userDb = usersDb.child(user.getUid());
+                userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()){
+                            if (dataSnapshot.child("sex").getValue() != null){
+                                userSex = dataSnapshot.child("sex").getValue().toString();
+                                switch (userSex){
+                                    case "Male":
+                                        oppositeUserSex = "Female";
+                                        break;
+                                    case "Female":
+                                        oppositeUserSex = "Male";
+                                        break;
+                                }
+                                getOppositeSexUsers();
+                            }
                         }
-                        getOppositeSexUsers();
                     }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
+                    }
+                });
             }
         });
+        thread.start();
     }
 
     public void getOppositeSexUsers() {
-        usersDb.addChildEventListener(new ChildEventListener() {
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.child("sex").getValue() != null){
-                    if (snapshot.exists() && !snapshot.child("connections").child("dislike").hasChild(currentUId) && !snapshot.child("connections").child("like").hasChild(currentUId) && snapshot.child("sex").getValue().toString().equals(oppositeUserSex) ) {
-                        String profileImageUrl = "default";
-                        if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
-                            profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+            public void run() {
+                usersDb.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        if (snapshot.child("sex").getValue() != null){
+                            if (snapshot.exists() && !snapshot.child("connections").child("dislike").hasChild(currentUId) && !snapshot.child("connections").child("like").hasChild(currentUId) && snapshot.child("sex").getValue().toString().equals(oppositeUserSex) ) {
+                                String profileImageUrl = "default";
+                                if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
+                                    profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                                }
+                                String userId = snapshot.getKey();
+                                String name = snapshot.child("name").getValue() != null ? snapshot.child("name").getValue().toString() : "";
+                                String age = snapshot.child("age").getValue() != null ? snapshot.child("age").getValue().toString() : "";
+                                String race = snapshot.child("race").getValue() != null ? snapshot.child("race").getValue().toString() : "";
+                                String bio = snapshot.child("bio").getValue() != null ? snapshot.child("bio").getValue().toString() : "";
+                                String location = snapshot.child("location").getValue() != null ? snapshot.child("location").getValue().toString() : "";
+
+                                if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
+                                    profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                                }
+
+                                cards item = new cards(userId, name, age, race, bio, location, profileImageUrl);
+
+                                // cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), snapshot.child("age").getValue().toString(), snapshot.child("race").getValue().toString(), snapshot.child("bio").getValue().toString(), snapshot.child("location").getValue().toString(), profileImageUrl);
+                                rowItems.add(item);
+                                arrayAdapter.notifyDataSetChanged();
+                            }
                         }
-                        String userId = snapshot.getKey();
-                        String name = snapshot.child("name").getValue() != null ? snapshot.child("name").getValue().toString() : "";
-                        String age = snapshot.child("age").getValue() != null ? snapshot.child("age").getValue().toString() : "";
-                        String race = snapshot.child("race").getValue() != null ? snapshot.child("race").getValue().toString() : "";
-                        String bio = snapshot.child("bio").getValue() != null ? snapshot.child("bio").getValue().toString() : "";
-                        String location = snapshot.child("location").getValue() != null ? snapshot.child("location").getValue().toString() : "";
-
-                        if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
-                            profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
-                        }
-
-                        cards item = new cards(userId, name, age, race, bio, location, profileImageUrl);
-
-                        // cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), snapshot.child("age").getValue().toString(), snapshot.child("race").getValue().toString(), snapshot.child("bio").getValue().toString(), snapshot.child("location").getValue().toString(), profileImageUrl);
-                        rowItems.add(item);
-                        arrayAdapter.notifyDataSetChanged();
                     }
-                }
-            }
 
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-            }
+                    }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
 
-            }
+                    }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
-            }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                });
             }
         });
+        thread.start();
     }
+
 
     public void logoutUser(View view) {
         mAuth.signOut();
