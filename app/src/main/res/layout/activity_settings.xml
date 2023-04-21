@@ -126,6 +126,14 @@
                 android:text="Confirm"
                 android:textColor="#E2CDB8" />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#654814"
+                android:onClick="logoutUser"
+                android:text="SignOut"
+                android:layout_marginLeft="20dp"
+                android:textColor="#E2CDB8" />
 
         </LinearLayout>
         </LinearLayout>
