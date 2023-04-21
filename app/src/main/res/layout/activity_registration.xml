@@ -31,14 +31,14 @@
             android:textColorHint="#654814"
             android:textColor="#654814"
             android:layout_marginBottom="10dp"
-            android:text="Male" />
+            android:text="Boy" />
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColorHint="#654814"
             android:textColor="#654814"
             android:layout_marginBottom="20dp"
-            android:text="Female" />
+            android:text="Girl" />
     </RadioGroup>
 
     <EditText
