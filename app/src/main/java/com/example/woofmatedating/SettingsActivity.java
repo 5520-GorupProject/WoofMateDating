@@ -1,24 +1,34 @@
 package com.example.woofmatedating;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -37,6 +47,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -58,6 +70,9 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView realLocation;
     private SwitchMaterial getLocation;
 
+    FusedLocationProviderClient fusedLocationProviderClient;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +88,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         realLocation = (TextView) findViewById(R.id.cityLocation);
         getLocation = findViewById(R.id.GetLocation);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
 
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
@@ -129,6 +145,47 @@ public class SettingsActivity extends AppCompatActivity {
                 Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
                 startActivity(intent);
 
+            }
+        });
+
+        getLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (buttonView.isChecked()){
+                    // here we first check location permission
+                    if (ActivityCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                        //  ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+                        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Location> task) {
+                                Location location = task.getResult();
+                                if(location != null){
+                                    try {
+                                        Geocoder geocoder = new Geocoder(SettingsActivity.this, Locale.getDefault());
+                                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                        String locationl = addresses.get(0).getCountryName() + ", "
+                                                + addresses.get(0).getAdminArea() + ", " + addresses.get(0).getLocality();
+                                        realLocation.setText(locationl);
+
+
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+
+                            }
+                        });
+
+
+
+
+
+
+
+                    }else{
+                        ActivityCompat.requestPermissions(SettingsActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
+                    }
+                }
             }
         });
     }
@@ -301,6 +358,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-    
+
 
 }

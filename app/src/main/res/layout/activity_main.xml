@@ -8,13 +8,13 @@
     tools:context="com.example.woofmatedating.MainActivity"
     android:orientation="vertical">
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#654814"
-            android:onClick="Location"
-            android:text="Location"
-            android:textColor="#E2CDB8" />
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="#654814"-->
+<!--            android:onClick="Location"-->
+<!--            android:text="Location"-->
+<!--            android:textColor="#E2CDB8" />-->
 
         <com.lorentzos.flingswipe.SwipeFlingAdapterView
             android:id="@+id/frame"
