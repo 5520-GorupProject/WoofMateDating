@@ -11,15 +11,14 @@
         android:id="@+id/linearLayout"
         android:layout_width="409dp"
         android:layout_height="729dp"
-        android:orientation="vertical"
         android:background="#E2CDB8"
+        android:orientation="vertical"
         android:textColor="#654814"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/profileImage"
@@ -31,67 +30,73 @@
         <EditText
             android:id="@+id/name"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#654814"
+            android:layout_height="40dp"
+            android:layout_marginBottom="15sp"
+            android:background="#d1c1ab"
+            android:hint="Name"
+            android:gravity="center"
             android:textColor="#654814"
-            android:layout_marginBottom="20sp"
-            android:background="@null"
-            android:hint="Name" />
+            android:textColorHint="#654814" />
 
         <EditText
             android:id="@+id/phone"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#654814"
-            android:textColor="#654814"
-            android:layout_marginBottom="20sp"
-            android:background="@null"
+            android:layout_height="40dp"
+            android:layout_marginBottom="15sp"
+            android:gravity="center"
+            android:background="#d1c1ab"
             android:hint="Phone"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:textColor="#654814"
+            android:textColorHint="#654814" />
 
         <EditText
             android:id="@+id/age"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#654814"
-            android:textColor="#654814"
-            android:layout_marginBottom="20sp"
-            android:background="@null"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:layout_marginBottom="15sp"
+            android:background="#d1c1ab"
             android:hint="Age"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="#654814"
+            android:textColorHint="#654814" />
 
         <EditText
             android:id="@+id/race"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#654814"
-            android:textColor="#654814"
-            android:layout_marginBottom="20sp"
-            android:background="@null"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:layout_marginBottom="15sp"
+            android:background="#d1c1ab"
             android:hint="Race"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="#654814"
+            android:textColorHint="#654814" />
 
         <EditText
             android:id="@+id/location"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColorHint="#654814"
-            android:textColor="#654814"
-            android:layout_marginBottom="20sp"
-            android:background="@null"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:layout_marginBottom="15sp"
+            android:background="#d1c1ab"
             android:hint="Location"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="#654814"
+            android:textColorHint="#654814" />
 
         <EditText
             android:id="@+id/bio"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginBottom="20sp"
-            android:textColorHint="#654814"
-            android:textColor="#654814"
-            android:background="@null"
+            android:layout_height="40dp"
+            android:layout_marginBottom="15sp"
+            android:gravity="center"
+            android:background="#d1c1ab"
             android:hint="Bio"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColor="#654814"
+            android:textColorHint="#654814" />
 
         <LinearLayout
             android:layout_width="wrap_content"

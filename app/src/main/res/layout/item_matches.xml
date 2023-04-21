@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:padding="20sp"
+    android:background="#E2CDB8"
     android:layout_width="match_parent">
     <ImageView
         android:layout_width="50sp"
@@ -19,11 +20,15 @@
             android:paddingBottom="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#654814"
+            android:textColorHint="#654814"
             android:text="Match's Name"
             android:id="@+id/MatchName"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="#654814"
+            android:textColorHint="#654814"
             android:text="Match's ID"
             android:layout_gravity="center"
             android:id="@+id/Matchid"/>

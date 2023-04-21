@@ -7,16 +7,19 @@
     android:layout_gravity="center"
     android:clipToPadding="false"
     android:outlineProvider="bounds"
+    android:background="#E2CDB8"
     android:paddingLeft="40sp"
     android:paddingTop="20sp"
     android:paddingRight="40sp"
-    android:paddingBottom="20sp">
+    android:paddingBottom="20sp"
+    android:layout_marginBottom="30dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="#E2CDB8"
         android:elevation="2dp"
         app:cardCornerRadius="4dp">
 
@@ -24,6 +27,7 @@
             android:layout_width="300dp"
             android:layout_height="550dp"
             android:layout_gravity="center"
+            android:background="#d1c1ab"
             android:orientation="vertical">
 
             <ImageView
@@ -39,6 +43,7 @@
                 android:gravity="center|left"
                 android:paddingLeft="20sp"
                 android:textColor="#654814"
+                android:textColorHint="#654814"
                 android:textSize="30sp"
                 tools:text="hello" />
 
@@ -49,6 +54,7 @@
                 android:gravity="center|left"
                 android:paddingLeft="20sp"
                 android:textColor="#654814"
+                android:textColorHint="#654814"
                 android:textSize="20sp"
                 tools:text="location" />
 
@@ -59,6 +65,7 @@
                 android:gravity="center|left"
                 android:paddingLeft="20sp"
                 android:textColor="#654814"
+                android:textColorHint="#654814"
                 android:textSize="20sp"
                 tools:text="age" />
 
@@ -69,6 +76,7 @@
                 android:gravity="center|left"
                 android:paddingLeft="20sp"
                 android:textColor="#654814"
+                android:textColorHint="#654814"
                 android:textSize="20sp"
                 tools:text="race" />
 
@@ -79,6 +87,7 @@
                 android:gravity="center|left"
                 android:paddingLeft="20sp"
                 android:textColor="#654814"
+                android:textColorHint="#654814"
                 android:textSize="20sp"
                 tools:text="bio" />
         </LinearLayout>
