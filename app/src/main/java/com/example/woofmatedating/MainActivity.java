@@ -1,5 +1,7 @@
 package com.example.woofmatedating;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     BottomNavigationView nav;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,10 +153,25 @@ public class MainActivity extends AppCompatActivity {
         currentUserConnectionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    //这里把toast换成提示框
-                    //Chat now？yes进入matches页面，no不动
-                    Toast.makeText(MainActivity.this, "New Connection！", Toast.LENGTH_LONG).show();
+                if (dataSnapshot.exists()) {
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Chat now!")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    Intent intent2 = new Intent(MainActivity.this, MatchesActivity.class);
+                                    startActivity(intent2);
+                                }
+                            })
+                            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                    // User cancelled the dialog
+                                }
+                            });
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
 
                     String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
 
@@ -182,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
     private String userSex;
     private String oppositeUserSex;
 
-    public void checkUserSex(){
+    public void checkUserSex() {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -191,10 +209,10 @@ public class MainActivity extends AppCompatActivity {
                 userDb.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
-                            if (dataSnapshot.child("sex").getValue() != null){
+                        if (dataSnapshot.exists()) {
+                            if (dataSnapshot.child("sex").getValue() != null) {
                                 userSex = dataSnapshot.child("sex").getValue().toString();
-                                switch (userSex){
+                                switch (userSex) {
                                     case "Male":
                                         oppositeUserSex = "Female";
                                         break;
@@ -206,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -223,8 +242,8 @@ public class MainActivity extends AppCompatActivity {
                 usersDb.addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        if (snapshot.child("sex").getValue() != null){
-                            if (snapshot.exists() && !snapshot.child("connections").child("dislike").hasChild(currentUId) && !snapshot.child("connections").child("like").hasChild(currentUId) && snapshot.child("sex").getValue().toString().equals(oppositeUserSex) ) {
+                        if (snapshot.child("sex").getValue() != null) {
+                            if (snapshot.exists() && !snapshot.child("connections").child("dislike").hasChild(currentUId) && !snapshot.child("connections").child("like").hasChild(currentUId) && snapshot.child("sex").getValue().toString().equals(oppositeUserSex)) {
                                 String profileImageUrl = "default";
                                 if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
                                     profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
