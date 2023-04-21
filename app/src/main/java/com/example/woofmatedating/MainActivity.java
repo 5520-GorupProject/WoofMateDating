@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView nav;
 
-        ImageView img;
+//    ImageView img;
     Button btnShare;
 
     //  private int currentCardPosition = 1;
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //ButterKnife.inject(this);
         btnShare = findViewById(R.id.share);
-        img = findViewById(R.id.img);
+//        img = findViewById(R.id.img);
 
         // Load the first card's image
 
@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
 
 
 //        btnShare.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
         arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems);
 
-    //    loadCardImage();
+        //    loadCardImage();
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
@@ -158,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 cards obj = (cards) dataObject;
                 String userId = obj.getUserId();
                 usersDb.child(userId).child("connections").child("dislike").child(currentUId).setValue(true);
-                loadCardImage();
+//                loadCardImage();
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
                 Toast.makeText(MainActivity.this, "Left Dislike", Toast.LENGTH_SHORT).show();
@@ -170,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 cards obj = (cards) dataObject;
                 String userId = obj.getUserId();
                 usersDb.child(userId).child("connections").child("like").child(currentUId).setValue(true);
-                loadCardImage();
+//                loadCardImage();
                 isConnectionMatch(userId);
                 Toast.makeText(MainActivity.this, "Right Like", Toast.LENGTH_SHORT).show();
                 //     currentCardPosition--;
@@ -195,46 +194,89 @@ public class MainActivity extends AppCompatActivity {
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-                Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                LayoutInflater inflater = getLayoutInflater();
+                View view = inflater.inflate(R.layout.image_popup_layout, null);
+
+                ImageView popupImage = view.findViewById(R.id.popup_image);
+                if (!rowItems.isEmpty()) {
+                    cards currentCard = rowItems.get(0);
+                    if (currentCard != null) {
+                        switch (currentCard.getProfileImageUrl()) {
+                            case "default":
+                                Glide.with(MainActivity.this).load(R.mipmap.ic_launcher).into(popupImage);
+                                break;
+                            default:
+                                Glide.with(MainActivity.this).load(currentCard.getProfileImageUrl()).into(popupImage);
+                                break;
+                        }
+                    }
+                }
+                builder.setView(view)
+                        .setPositiveButton("Share", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                BitmapDrawable bitmapDrawable = (BitmapDrawable) popupImage.getDrawable();
+                                Bitmap bitmap = bitmapDrawable.getBitmap();
+                                String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"some title", null);
+                                Uri bitmapUri = Uri.parse(bitmapPath);
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setType("image/*");
+                                intent.putExtra(Intent.EXTRA_STREAM,bitmapUri);
+                                startActivity(Intent.createChooser(intent,"Share Image"));
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                // User cancelled the dialog
+                            }
+                        });
+
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
 
             }
+
+
         });
 
-        btnShare.setOnClickListener(v->{
-            BitmapDrawable bitmapDrawable = (BitmapDrawable) img.getDrawable();
-            Bitmap bitmap = bitmapDrawable.getBitmap();
-            String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"some title", null);
-            Uri bitmapUri = Uri.parse(bitmapPath);
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("image/*");
-            intent.putExtra(Intent.EXTRA_STREAM,bitmapUri);
-            startActivity(Intent.createChooser(intent,"Share Image"));
-
-
-        }
-
-        );
+//        btnShare.setOnClickListener(v -> {
+//                    BitmapDrawable bitmapDrawable = (BitmapDrawable) img.getDrawable();
+//                    Bitmap bitmap = bitmapDrawable.getBitmap();
+//                    String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "some title", null);
+//                    Uri bitmapUri = Uri.parse(bitmapPath);
+//                    Intent intent = new Intent(Intent.ACTION_SEND);
+//                    intent.setType("image/*");
+//                    intent.putExtra(Intent.EXTRA_STREAM, bitmapUri);
+//                    startActivity(Intent.createChooser(intent, "Share Image"));
+//
+//
+//                }
+//
+//        );
     }
 
 
     ////////////
     ////////////
 
-    private void loadCardImage() {
-        if (!rowItems.isEmpty()) {
-            cards currentCard = rowItems.get(0);
-            if (currentCard != null) {
-                switch(currentCard.getProfileImageUrl()){
-                    case "default":
-                        Glide.with(MainActivity.this).load(R.mipmap.ic_launcher).into(img);
-                        break;
-                    default:
-                        Glide.with(MainActivity.this).load(currentCard.getProfileImageUrl()).into(img);
-                        break;
-                }
-            }
-        }
-    }
+//    private void loadCardImage() {
+//        if (!rowItems.isEmpty()) {
+//            cards currentCard = rowItems.get(0);
+//            if (currentCard != null) {
+//                switch (currentCard.getProfileImageUrl()) {
+//                    case "default":
+//                        Glide.with(MainActivity.this).load(R.mipmap.ic_launcher).into(img);
+//                        break;
+//                    default:
+//                        Glide.with(MainActivity.this).load(currentCard.getProfileImageUrl()).into(img);
+//                        break;
+//                }
+//            }
+//        }
+//    }
 
 
     private void isConnectionMatch(String userId) {
@@ -354,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
                                 // cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), snapshot.child("age").getValue().toString(), snapshot.child("race").getValue().toString(), snapshot.child("bio").getValue().toString(), snapshot.child("location").getValue().toString(), profileImageUrl);
                                 rowItems.add(item);
                                 arrayAdapter.notifyDataSetChanged();
-                                loadCardImage();
+//                                loadCardImage();
                             }
                         }
                     }
