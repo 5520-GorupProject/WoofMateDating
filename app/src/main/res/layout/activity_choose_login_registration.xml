@@ -63,7 +63,7 @@
 
     <LinearLayout
         android:layout_width="444dp"
-        android:layout_height="431dp"
+        android:layout_height="450dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,10 +73,10 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="331dp"
-            android:layout_height="283dp"
+            android:layout_width="355dp"
+            android:layout_height="305dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/_1" />
+            app:srcCompat="@drawable/_1_8" />
     </LinearLayout>
 
 
