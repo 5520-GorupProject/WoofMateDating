@@ -4,111 +4,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E2CDB8"
     tools:context=".SettingsActivity">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/AppTheme"
+        app:titleTextColor="#E2CDB8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="WoofMate"
+        tools:ignore="MissingClass">
+
+    </com.google.android.material.appbar.MaterialToolbar>
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#E2CDB8"
+        android:gravity="center"
         android:orientation="vertical"
         android:textColor="#654814"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/include2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/profileImage"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100sp"
-            android:layout_marginBottom="20sp"
-            android:src="@drawable/_1_2" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="15sp"
-            android:background="#d1c1ab"
-            android:hint="Name"
-            android:gravity="center"
-            android:textColor="#654814"
-            android:textColorHint="#654814" />
+            <ImageView
+                android:id="@+id/profileImage"
+                android:layout_width="match_parent"
+                android:layout_height="100sp"
+                android:layout_marginBottom="20sp"
+                android:src="@drawable/_1_2" />
 
-        <EditText
-            android:id="@+id/phone"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="15sp"
-            android:gravity="center"
-            android:background="#d1c1ab"
-            android:hint="Phone"
-            android:inputType="phone"
-            android:textColor="#654814"
-            android:textColorHint="#654814" />
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="15sp"
+                android:background="#d1c1ab"
+                android:gravity="center"
+                android:hint="Name"
+                android:textColor="#654814"
+                android:textColorHint="#654814" />
 
-        <EditText
-            android:id="@+id/age"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:layout_marginBottom="15sp"
-            android:background="#d1c1ab"
-            android:hint="Age"
-            android:inputType="text"
-            android:textColor="#654814"
-            android:textColorHint="#654814" />
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="15sp"
+                android:background="#d1c1ab"
+                android:gravity="center"
+                android:hint="Phone"
+                android:inputType="phone"
+                android:textColor="#654814"
+                android:textColorHint="#654814" />
 
-        <EditText
-            android:id="@+id/race"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:layout_marginBottom="15sp"
-            android:background="#d1c1ab"
-            android:hint="Race"
-            android:inputType="text"
-            android:textColor="#654814"
-            android:textColorHint="#654814" />
+            <EditText
+                android:id="@+id/age"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="15sp"
+                android:background="#d1c1ab"
+                android:gravity="center"
+                android:hint="Age"
+                android:inputType="text"
+                android:textColor="#654814"
+                android:textColorHint="#654814" />
 
-        <EditText
-            android:id="@+id/location"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:layout_marginBottom="15sp"
-            android:background="#d1c1ab"
-            android:hint="Location"
-            android:inputType="text"
-            android:textColor="#654814"
-            android:textColorHint="#654814" />
+            <EditText
+                android:id="@+id/race"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="15sp"
+                android:background="#d1c1ab"
+                android:gravity="center"
+                android:hint="Race"
+                android:inputType="text"
+                android:textColor="#654814"
+                android:textColorHint="#654814" />
 
-        <EditText
-            android:id="@+id/bio"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="15sp"
-            android:gravity="center"
-            android:background="#d1c1ab"
-            android:hint="Bio"
-            android:inputType="text"
-            android:textColor="#654814"
-            android:textColorHint="#654814" />
+            <EditText
+                android:id="@+id/location"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="15sp"
+                android:background="#d1c1ab"
+                android:gravity="center"
+                android:hint="Location"
+                android:inputType="text"
+                android:textColor="#654814"
+                android:textColorHint="#654814" />
+
+            <EditText
+                android:id="@+id/bio"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="15sp"
+                android:background="#d1c1ab"
+                android:gravity="center"
+                android:hint="Bio"
+                android:inputType="text"
+                android:textColor="#654814"
+                android:textColorHint="#654814" />
         </LinearLayout>
 
         <LinearLayout
@@ -129,19 +137,20 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
                 android:background="#654814"
                 android:onClick="logoutUser"
                 android:text="SignOut"
-                android:layout_marginLeft="20dp"
                 android:textColor="#E2CDB8" />
 
         </LinearLayout>
-        </LinearLayout>
-        <include
-            layout="@layout/nav_bar"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
     </LinearLayout>
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/nav_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

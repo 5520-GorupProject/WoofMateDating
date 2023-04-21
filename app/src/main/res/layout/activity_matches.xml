@@ -9,13 +9,26 @@
     android:layout_centerVertical="true"
     tools:context=".MatchesActivity">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/AppTheme"
+        app:titleTextColor="#E2CDB8"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="WoofMate"
+        tools:ignore="MissingClass">
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/linearLayoutCompat"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
 
         <androidx.core.widget.NestedScrollView

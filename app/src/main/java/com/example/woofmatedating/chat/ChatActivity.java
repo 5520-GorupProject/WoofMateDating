@@ -70,7 +70,7 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        Button mGoBackButton = findViewById(R.id.goBackButton);
+        ImageButton mGoBackButton = findViewById(R.id.goBackButton);
         mGoBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
