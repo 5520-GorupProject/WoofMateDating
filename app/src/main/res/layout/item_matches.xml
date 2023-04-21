@@ -9,6 +9,7 @@
         android:layout_width="50sp"
         android:layout_height="50sp"
         android:src="@mipmap/ic_launcher"
+        android:layout_gravity="center"
         android:id="@+id/MatchImage"/>
     <LinearLayout
         android:paddingLeft="20sp"

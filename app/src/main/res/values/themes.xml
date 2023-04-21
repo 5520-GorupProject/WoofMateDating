@@ -13,4 +13,13 @@
         <item name="android:statusBarColor">#654814</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.WoofMateDating.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.WoofMateDating.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.WoofMateDating.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

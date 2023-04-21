@@ -37,11 +37,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SettingsActivity extends AppCompatActivity {
+public class InfoActivity extends AppCompatActivity {
 
     private EditText mNameField, mPhoneField, mRaceField, mAgeField, mBioField, mLocationField;
 
-    private Button mBack, mConfirm;
+    private Button mChange;
 
     private ImageView mProfileImage;
 
@@ -57,7 +57,8 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_info);
+
 
         // String userSex = getIntent().getExtras().getString("userSex");
         mNameField = (EditText) findViewById(R.id.name);
@@ -66,13 +67,9 @@ public class SettingsActivity extends AppCompatActivity {
         mRaceField = (EditText) findViewById(R.id.race);
         mBioField = (EditText) findViewById(R.id.bio);
         mLocationField = (EditText) findViewById(R.id.location);
-
-
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
 
-        mBack = (Button) findViewById(R.id.back);
-        mConfirm = (Button) findViewById(R.id.confirm);
-
+        mChange = (Button) findViewById(R.id.change);
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
@@ -86,13 +83,11 @@ public class SettingsActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.setting:
-                        Intent intent1 = new Intent(SettingsActivity.this, InfoActivity.class);
-                        startActivity(intent1);
                         return true;
 
                     case R.id.chat:
-                        Intent intent3 = new Intent(getApplicationContext(), MatchesActivity.class);
-                        startActivity(intent3);
+                        Intent intent1 = new Intent(getApplicationContext(), MatchesActivity.class);
+                        startActivity(intent1);
                         return true;
 
                     case R.id.home:
@@ -104,56 +99,22 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
-        /*final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<Instrumentation.ActivityResult>() {
-                    @Override
-                    public void onActivityResult(Instrumentation.ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getResultData();
-                            // Handle the result data here
-                        }
-                    }
-                }
-        );*/
-
-        /*final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        // Handle the result data here
-                    }
-                }
-        );*/
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent, 1);*/
-                // resultLauncher.launch(intent);
                 showPhotoAccessWarning();
             }
         });
 
 
-        mConfirm.setOnClickListener(new View.OnClickListener() {
+        mChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 saveUserInformation();
-                Intent intent = new Intent(SettingsActivity.this, InfoActivity.class);
+                Intent intent = new Intent(InfoActivity.this, SettingsActivity.class);
                 startActivity(intent);
 
-            }
-        });
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveUserInformation();
-                Intent intent = new Intent(SettingsActivity.this, InfoActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -245,6 +206,17 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+            final Uri imageUri = data.getData();
+            resultUri = imageUri;
+            mProfileImage.setImageURI(resultUri);
+
+        }
+    }
+
     private void saveUserInformation() {
         name = mNameField.getText().toString();
         phone = mPhoneField.getText().toString();
@@ -307,16 +279,4 @@ public class SettingsActivity extends AppCompatActivity {
             finish();
         }
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
-            final Uri imageUri = data.getData();
-            resultUri = imageUri;
-            mProfileImage.setImageURI(resultUri);
-
-        }
-    }
-
 }
