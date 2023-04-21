@@ -35,7 +35,7 @@
     <Button
         android:id="@+id/login"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="Login"
         android:background="#654814"
         android:textColor="#E2CDB8"

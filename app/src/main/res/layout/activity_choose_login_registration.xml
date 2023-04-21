@@ -10,7 +10,7 @@
     <Button
         android:id="@+id/login"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="#654814"
         android:text="login"
         android:textColor="#E2CDB8"
@@ -23,7 +23,7 @@
     <Button
         android:id="@+id/register"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:background="#654814"
         android:text="register"
         android:textColor="#E2CDB8"
@@ -76,7 +76,7 @@
             android:layout_width="355dp"
             android:layout_height="305dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/_1_8" />
+            app:srcCompat="@drawable/_1_9" />
     </LinearLayout>
 
 

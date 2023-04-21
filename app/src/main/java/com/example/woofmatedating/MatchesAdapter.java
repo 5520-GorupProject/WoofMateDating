@@ -24,7 +24,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders> {
 
 
     @Override
-    public MatchesViewHolders onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MatchesViewHolders onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_matches, null, false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutView.setLayoutParams(lp);
@@ -33,7 +33,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesViewHolders> {
     }
 
     @Override
-    public void onBindViewHolder(MatchesViewHolders holder, int position) {
+    public void onBindViewHolder(@NonNull MatchesViewHolders holder, int position) {
         holder.mMatchId.setText(matchesList.get(position).getUserId());
         holder.mMatchName.setText(matchesList.get(position).getName());
         if (!matchesList.get(position).getProfileImageUrl().equals("default")) {
