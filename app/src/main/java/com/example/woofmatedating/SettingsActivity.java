@@ -2,12 +2,17 @@ package com.example.woofmatedating;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +21,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,9 +39,14 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -150,16 +161,11 @@ public class SettingsActivity extends AppCompatActivity {
     private void showPhotoAccessWarning() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Access Photos")
-                .setMessage("WoofMate would like to access your photos. Do you want to allow access?")
+                .setMessage("WoofMate would like to access your photos or use the camera. Do you want to allow access?")
                 .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // 在单独的线程中打开图库
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                openGallery();
-                            }
-                        }).start();
+                        // Show another dialog to choose between Gallery and Camera
+                        choosePhotoSource();
                     }
                 })
                 .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
@@ -171,6 +177,83 @@ public class SettingsActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+
+    private void choosePhotoSource() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Choose Photo Source")
+                .setItems(new CharSequence[]{"Gallery", "Camera"}, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                // Open the gallery
+                                openGallery();
+                                break;
+                            case 1:
+                                // Open the camera
+                                openCamera();
+                                break;
+                        }
+                    }
+                });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+
+
+    private File photoFile;
+
+    private void openCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        PackageManager packageManager = getPackageManager();
+        List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        boolean isIntentSafe = activities.size() > 0;
+
+        if (isIntentSafe) {
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                Log.e("SettingsActivity", "Error creating image file: " + ex.getMessage());
+            }
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.woofmatedating.fileprovider",
+                        photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                Intent chooserIntent = Intent.createChooser(intent, "Select Camera App");
+                startActivityForResult(chooserIntent, 2);
+                Log.d("SettingsActivity", "Camera intent started");
+            } else {
+                Log.e("SettingsActivity", "Photo file is null");
+            }
+        } else {
+            Log.e("SettingsActivity", "No camera app found");
+        }
+    }
+
+
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        return image;
+    }
+
+
+
+
 
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -299,13 +382,30 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             final Uri imageUri = data.getData();
             resultUri = imageUri;
             mProfileImage.setImageURI(resultUri);
-
+            Log.d("SettingsActivity", "Gallery image selected");
+        } else if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
+            resultUri = Uri.fromFile(photoFile);
+            mProfileImage.setImageURI(resultUri);
+            Log.d("SettingsActivity", "Camera image captured");
+        } else {
+            Log.e("SettingsActivity", "Failed to get image: requestCode=" + requestCode + ", resultCode=" + resultCode);
         }
     }
+
+
+
+    public Uri getImageUri(Context context, Bitmap bitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
+        return Uri.parse(path);
+    }
+
+
 
     public void logoutUser(View view) {
         mAuth.signOut();

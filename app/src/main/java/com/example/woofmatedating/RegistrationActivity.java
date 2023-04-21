@@ -68,7 +68,8 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 final RadioButton radioButton = (RadioButton) findViewById(selectId);
 
-                if(radioButton.getText() == null){
+                if(radioButton == null || mEmail.getText().toString().isEmpty() || mPassword.getText().toString().isEmpty() || mName.getText().toString().isEmpty()){
+                    Toast.makeText(RegistrationActivity.this, "Please fill all fields.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
