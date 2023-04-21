@@ -152,6 +152,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (buttonView.isChecked()){
+                    realLocation.setVisibility(View.VISIBLE);
                     // here we first check location permission
                     if (ActivityCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                         //  ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
@@ -185,6 +186,8 @@ public class SettingsActivity extends AppCompatActivity {
                     }else{
                         ActivityCompat.requestPermissions(SettingsActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
                     }
+                } else {
+                    realLocation.setVisibility(View.GONE);
                 }
             }
         });
