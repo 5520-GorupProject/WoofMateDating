@@ -4,7 +4,11 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -66,8 +70,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //ButterKnife.inject(this);
-        img = findViewById(R.id.img);
         btnShare = findViewById(R.id.share);
+        img = findViewById(R.id.img);
+
+        // Load the first card's image
+
         nav = findViewById(R.id.navBar);
         nav.setSelectedItemId(R.id.home);
         nav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
@@ -92,30 +99,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnShare = findViewById(R.id.share);
-
-        btnShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cards currentCard = rowItems.get(0);
-                if (currentCard != null) {
-
-                    switch(currentCard.getProfileImageUrl()){
-                        case "default":
-                            Glide.with(MainActivity.this).load(R.mipmap.ic_launcher).into(img);
-                            break;
-                        default:
-                            // Glide.clear(image);
-                            Glide.with(MainActivity.this).load(currentCard.getProfileImageUrl()).into(img);
-                            break;
-                    }
 
 
-                } else {
-                    Toast.makeText(MainActivity.this, "No more cards to display", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        btnShare.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                cards currentCard = rowItems.get(0);
+//                if (currentCard != null) {
+//
+//                    switch(currentCard.getProfileImageUrl()){
+//                        case "default":
+//                            Glide.with(MainActivity.this).load(R.mipmap.ic_launcher).into(img);
+//                            break;
+//                        default:
+//                            // Glide.clear(image);
+//                            Glide.with(MainActivity.this).load(currentCard.getProfileImageUrl()).into(img);
+//                            break;
+//                    }
+//
+//
+//                } else {
+//                    Toast.makeText(MainActivity.this, "No more cards to display", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
         usersDb = FirebaseDatabase.getInstance().getReference().child("Users");
 
@@ -128,9 +135,14 @@ public class MainActivity extends AppCompatActivity {
 
         arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems);
 
+    //    loadCardImage();
+
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
         flingContainer.setAdapter(arrayAdapter);
+
+//        loadCardImage();
+
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
@@ -146,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 cards obj = (cards) dataObject;
                 String userId = obj.getUserId();
                 usersDb.child(userId).child("connections").child("dislike").child(currentUId).setValue(true);
+                loadCardImage();
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
                 Toast.makeText(MainActivity.this, "Left Dislike", Toast.LENGTH_SHORT).show();
@@ -157,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 cards obj = (cards) dataObject;
                 String userId = obj.getUserId();
                 usersDb.child(userId).child("connections").child("like").child(currentUId).setValue(true);
+                loadCardImage();
                 isConnectionMatch(userId);
                 Toast.makeText(MainActivity.this, "Right Like", Toast.LENGTH_SHORT).show();
                 //     currentCardPosition--;
@@ -185,46 +199,42 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        btnShare.setOnClickListener(v->{
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) img.getDrawable();
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"some title", null);
+            Uri bitmapUri = Uri.parse(bitmapPath);
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("image/*");
+            intent.putExtra(Intent.EXTRA_STREAM,bitmapUri);
+            startActivity(Intent.createChooser(intent,"Share Image"));
+
+
+        }
+
+        );
     }
 
 
     ////////////
     ////////////
-//    private cards getCurrentCard() {
-//        return rowItems.get(0);
-//
-//    }
 
-//    private void showProfileImagePopup(String imageUrl) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//        LayoutInflater inflater = getLayoutInflater();
-//        View view = inflater.inflate(R.layout.image_popup_layout, null);
-//
-//        ImageView popupImage = view.findViewById(R.id.popup_image);
-////        switch(card_item.getProfileImageUrl()){
-////            case "default":
-////                Glide.with(convertView.getContext()).load(R.mipmap.ic_launcher).into(image);
-////                break;
-////            default:
-////                // Glide.clear(image);
-////                Glide.with(convertView.getContext()).load(card_item.getProfileImageUrl()).into(image);
-////                break;
-////        }
-//
-//        Glide.with(MainActivity.this)
-//                .load(imageUrl)
-//                .into(popupImage);
-//
-//        builder.setView(view)
-//                .setPositiveButton("Close", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        dialog.dismiss();
-//                    }
-//                });
-//
-//        AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-//    }
+    private void loadCardImage() {
+        if (!rowItems.isEmpty()) {
+            cards currentCard = rowItems.get(0);
+            if (currentCard != null) {
+                switch(currentCard.getProfileImageUrl()){
+                    case "default":
+                        Glide.with(MainActivity.this).load(R.mipmap.ic_launcher).into(img);
+                        break;
+                    default:
+                        Glide.with(MainActivity.this).load(currentCard.getProfileImageUrl()).into(img);
+                        break;
+                }
+            }
+        }
+    }
 
 
     private void isConnectionMatch(String userId) {
@@ -344,6 +354,7 @@ public class MainActivity extends AppCompatActivity {
                                 // cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), snapshot.child("age").getValue().toString(), snapshot.child("race").getValue().toString(), snapshot.child("bio").getValue().toString(), snapshot.child("location").getValue().toString(), profileImageUrl);
                                 rowItems.add(item);
                                 arrayAdapter.notifyDataSetChanged();
+                                loadCardImage();
                             }
                         }
                     }
