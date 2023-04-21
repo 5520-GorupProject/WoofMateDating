@@ -14,17 +14,19 @@
 
         <include layout="@layout/nav_bar" />
 
+
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SignOut"
             android:onClick="logoutUser" />
 
-        <!--        <Button-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Matches"-->
-        <!--            android:onClick="goToMatches" />-->
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Share"
+                    android:id="@+id/share" />
 
         <!--        <Button-->
         <!--            android:layout_width="wrap_content"-->
@@ -32,7 +34,16 @@
         <!--            android:text="Settings"-->
         <!--            android:onClick="goToSettings" />-->
 
+
     </LinearLayout>
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        tools:src="@tools:sample/avatars" />
+
 
     <com.lorentzos.flingswipe.SwipeFlingAdapterView
         android:id="@+id/frame"
