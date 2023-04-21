@@ -6,10 +6,11 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navBar"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="#d1c1ab"
         app:itemIconTint="@drawable/selector"
+        app:itemIconSize="60dp"
         app:itemTextColor="@drawable/selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
