@@ -5,9 +5,9 @@
     android:shape="rectangle">
     <corners android:radius="1dp" />
     <!-- This is the border color -->
-    <stroke android:width="2dp" android:color="#ffffff" />
+    <stroke android:width="2dp" android:color="#E2CDB8" />
 
     <!--- This is the background color -->
-    <solid android:color="#ffffff" />
+    <solid android:color="#E2CDB8" />
 
 </shape>

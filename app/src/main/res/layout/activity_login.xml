@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#d1c1ab"
     tools:context="com.example.woofmatedating.LoginActivity">
 
     <EditText
@@ -11,6 +12,8 @@
         android:layout_width="300dp"
         android:layout_height="48dp"
         android:hint="email"
+        android:textColorHint="#654814"
+        android:textColor="#654814"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.50"
@@ -22,6 +25,8 @@
         android:layout_width="300dp"
         android:layout_height="48dp"
         android:hint="password"
+        android:textColorHint="#654814"
+        android:textColor="#654814"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +37,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Login"
+        android:background="#654814"
+        android:textColor="#E2CDB8"
         app:layout_constraintBottom_toTopOf="@+id/guideline8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

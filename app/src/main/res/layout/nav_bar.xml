@@ -8,6 +8,7 @@
         android:id="@+id/navBar"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:background="#d1c1ab"
         app:itemIconTint="@drawable/selector"
         app:itemTextColor="@drawable/selector"
         app:layout_constraintBottom_toBottomOf="parent"
