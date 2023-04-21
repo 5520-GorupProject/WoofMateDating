@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,6 +55,8 @@ public class SettingsActivity extends AppCompatActivity {
     private Uri resultUri;
     BottomNavigationView nav;
 
+    private TextView realLocation;
+    private SwitchMaterial getLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +70,9 @@ public class SettingsActivity extends AppCompatActivity {
         mRaceField = (EditText) findViewById(R.id.race);
         mBioField = (EditText) findViewById(R.id.bio);
         mLocationField = (EditText) findViewById(R.id.location);
+
+        realLocation = (TextView) findViewById(R.id.cityLocation);
+        getLocation = findViewById(R.id.GetLocation);
 
 
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
@@ -101,28 +108,7 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
-        /*final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<Instrumentation.ActivityResult>() {
-                    @Override
-                    public void onActivityResult(Instrumentation.ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getResultData();
-                            // Handle the result data here
-                        }
-                    }
-                }
-        );*/
 
-        /*final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        // Handle the result data here
-                    }
-                }
-        );*/
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -313,5 +299,8 @@ public class SettingsActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+
+    
 
 }
