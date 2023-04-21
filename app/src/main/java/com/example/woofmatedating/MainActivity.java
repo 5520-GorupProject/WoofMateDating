@@ -3,10 +3,16 @@ package com.example.woofmatedating;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -14,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -142,7 +149,47 @@ public class MainActivity extends AppCompatActivity {
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-                Toast.makeText(MainActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                LayoutInflater inflater = getLayoutInflater();
+                View view = inflater.inflate(R.layout.image_popup_layout, null);
+
+                ImageView popupImage = view.findViewById(R.id.popup_image);
+                if (!rowItems.isEmpty()) {
+                    cards currentCard = rowItems.get(0);
+                    if (currentCard != null) {
+                        switch (currentCard.getProfileImageUrl()) {
+                            case "default":
+                                Glide.with(MainActivity.this).load(R.mipmap.ic_launcher).into(popupImage);
+                                break;
+                            default:
+                                Glide.with(MainActivity.this).load(currentCard.getProfileImageUrl()).into(popupImage);
+                                break;
+                        }
+                    }
+                }
+                builder.setView(view)
+                        .setPositiveButton("Share", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                BitmapDrawable bitmapDrawable = (BitmapDrawable) popupImage.getDrawable();
+                                Bitmap bitmap = bitmapDrawable.getBitmap();
+                                String bitmapPath = MediaStore.Images.Media.insertImage(getContentResolver(),bitmap,"some title", null);
+                                Uri bitmapUri = Uri.parse(bitmapPath);
+                                Intent intent = new Intent(Intent.ACTION_SEND);
+                                intent.setType("image/*");
+                                intent.putExtra(Intent.EXTRA_STREAM,bitmapUri);
+                                startActivity(Intent.createChooser(intent,"Share Image"));
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                // User cancelled the dialog
+                            }
+                        });
+
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
 
             }
         });
@@ -295,12 +342,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void logoutUser(View view) {
-        mAuth.signOut();
-        Intent intent = new Intent(MainActivity.this, ChooseLoginRegistrationActivity.class);
-        startActivity(intent);
-        finish();
-    }
+//    public void logoutUser(View view) {
+//        mAuth.signOut();
+//        Intent intent = new Intent(MainActivity.this, ChooseLoginRegistrationActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
 
 //    public void goToSettings(View view) {
 //        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);

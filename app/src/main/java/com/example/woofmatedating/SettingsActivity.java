@@ -307,4 +307,11 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    public void logoutUser(View view) {
+        mAuth.signOut();
+        Intent intent = new Intent(SettingsActivity.this, ChooseLoginRegistrationActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 }

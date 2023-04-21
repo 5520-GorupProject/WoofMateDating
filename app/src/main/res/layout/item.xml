@@ -36,6 +36,15 @@
                 android:layout_height="300dp"
                 android:scaleType="centerCrop" />
 
+            <ImageView
+                android:id="@+id/photo"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_share"
+                android:layout_marginLeft="250dp"
+                android:scaleType="fitXY"/>
+
+
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
