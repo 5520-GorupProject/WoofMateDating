@@ -9,7 +9,7 @@
     android:outlineProvider="bounds"
     android:background="#E2CDB8"
     android:paddingLeft="40sp"
-    android:paddingTop="20sp"
+    android:paddingTop="70sp"
     android:paddingRight="40sp"
     android:paddingBottom="20sp"
     android:layout_marginBottom="30dp">
@@ -25,7 +25,7 @@
 
         <LinearLayout
             android:layout_width="300dp"
-            android:layout_height="550dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="#d1c1ab"
             android:orientation="vertical">
@@ -33,7 +33,7 @@
             <ImageView
                 android:id="@+id/image"
                 android:layout_width="match_parent"
-                android:layout_height="291dp"
+                android:layout_height="300dp"
                 android:scaleType="centerCrop" />
 
             <TextView
@@ -61,7 +61,7 @@
             <TextView
                 android:id="@+id/age"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:gravity="center|left"
                 android:paddingLeft="20sp"
                 android:textColor="#654814"
@@ -83,7 +83,7 @@
             <TextView
                 android:id="@+id/bio"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="wrap_content"
                 android:gravity="center|left"
                 android:paddingLeft="20sp"
                 android:textColor="#654814"

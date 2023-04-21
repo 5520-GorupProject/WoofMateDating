@@ -121,19 +121,9 @@
                 android:id="@+id/confirm"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
                 android:background="#654814"
                 android:gravity="center"
                 android:text="Confirm"
-                android:textColor="#E2CDB8" />
-
-            <Button
-                android:id="@+id/back"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:background="#654814"
-                android:gravity="center"
-                android:text="Back"
                 android:textColor="#E2CDB8" />
 
 

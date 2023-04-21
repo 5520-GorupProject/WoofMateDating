@@ -41,7 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private EditText mNameField, mPhoneField, mRaceField, mAgeField, mBioField, mLocationField;
 
-    private Button mBack, mConfirm;
+    private Button mConfirm;
 
     private ImageView mProfileImage;
 
@@ -70,7 +70,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
 
-        mBack = (Button) findViewById(R.id.back);
         mConfirm = (Button) findViewById(R.id.confirm);
 
         mAuth = FirebaseAuth.getInstance();
@@ -86,8 +85,6 @@ public class SettingsActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.setting:
-                        Intent intent1 = new Intent(SettingsActivity.this, InfoActivity.class);
-                        startActivity(intent1);
                         return true;
 
                     case R.id.chat:
@@ -143,20 +140,11 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 saveUserInformation();
-                Intent intent = new Intent(SettingsActivity.this, InfoActivity.class);
+                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
                 startActivity(intent);
 
             }
         });
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveUserInformation();
-                Intent intent = new Intent(SettingsActivity.this, InfoActivity.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
     private void showPhotoAccessWarning() {
