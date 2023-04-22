@@ -64,7 +64,7 @@ import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private EditText mNameField, mPhoneField, mRaceField, mAgeField, mBioField, mLocationField;
+    private EditText mNameField, mPhoneField, mRaceField, mAgeField, mBioField;
 
     private Button mConfirm;
 
@@ -80,6 +80,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private TextView realLocation;
+    private TextView mLocationField;
     private SwitchMaterial getLocation;
 
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -96,9 +97,9 @@ public class SettingsActivity extends AppCompatActivity {
         mAgeField = (EditText) findViewById(R.id.age);
         mRaceField = (EditText) findViewById(R.id.race);
         mBioField = (EditText) findViewById(R.id.bio);
-        mLocationField = (EditText) findViewById(R.id.location);
+        mLocationField = (TextView) findViewById(R.id.location);
 
-        realLocation = (TextView) findViewById(R.id.cityLocation);
+        //realLocation = (TextView) findViewById(R.id.cityLocation);
         getLocation = findViewById(R.id.GetLocation);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -172,7 +173,7 @@ public class SettingsActivity extends AppCompatActivity {
                 if (buttonView.isChecked()){
                     getLocation();
                 } else {
-                    realLocation.setVisibility(View.GONE);
+                    //realLocation.setVisibility(View.GONE);
                 }
             }
         });
@@ -199,7 +200,7 @@ public class SettingsActivity extends AppCompatActivity {
             } else {
                 // Permission denied, display a message or disable the switch
                 getLocation.setChecked(false);
-                realLocation.setVisibility(View.GONE);
+                //realLocation.setVisibility(View.GONE);
                 // You can show a message to the user to inform them that the permission is required
             }
         }
@@ -207,7 +208,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private void getLocation(){
-        realLocation.setVisibility(View.VISIBLE);
+        mLocationField.setVisibility(View.VISIBLE);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -222,9 +223,8 @@ public class SettingsActivity extends AppCompatActivity {
                                 try {
                                     Geocoder geocoder = new Geocoder(SettingsActivity.this, Locale.getDefault());
                                     List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                                    String locationl = addresses.get(0).getCountryName() + ", "
-                                            + addresses.get(0).getAdminArea() + ", " + addresses.get(0).getLocality();
-                                    realLocation.setText(locationl);
+                                    String locationl = addresses.get(0).getAdminArea() + ", " + addresses.get(0).getLocality();
+                                    mLocationField.setText(locationl);
 
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
