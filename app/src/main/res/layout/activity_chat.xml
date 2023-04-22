@@ -9,6 +9,7 @@
     tools:context=".chat.ChatActivity">
 
     <LinearLayout
+        android:id="@+id/chatTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#654814"
@@ -41,13 +42,13 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/chatTitle"
         android:layout_above="@+id/sendLayout">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical">
-
         </androidx.recyclerview.widget.RecyclerView>
 
     </androidx.core.widget.NestedScrollView>
@@ -74,7 +75,5 @@
             android:background="#654814"
             app:srcCompat="@android:drawable/ic_menu_send" />
     </LinearLayout>
-
-
 
 </RelativeLayout>
