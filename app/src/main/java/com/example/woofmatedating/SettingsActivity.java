@@ -1,5 +1,6 @@
 package com.example.woofmatedating;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,6 +9,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,18 +20,25 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -45,6 +56,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -65,6 +77,12 @@ public class SettingsActivity extends AppCompatActivity {
     BottomNavigationView nav;
 
 
+    private TextView realLocation;
+    private SwitchMaterial getLocation;
+
+    FusedLocationProviderClient fusedLocationProviderClient;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +96,9 @@ public class SettingsActivity extends AppCompatActivity {
         mBioField = (EditText) findViewById(R.id.bio);
         mLocationField = (EditText) findViewById(R.id.location);
 
+        realLocation = (TextView) findViewById(R.id.cityLocation);
+        getLocation = findViewById(R.id.GetLocation);
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
 
@@ -156,7 +177,57 @@ public class SettingsActivity extends AppCompatActivity {
 
             }
         });
+
+        getLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (buttonView.isChecked()){
+                    getLocation();
+                } else {
+                    realLocation.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
+
+    private void getLocation(){
+        realLocation.setVisibility(View.VISIBLE);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // here we first check location permission
+                if (ActivityCompat.checkSelfPermission(SettingsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    //  ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 100);
+                    fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Location> task) {
+                            Location location = task.getResult();
+                            if(location != null){
+                                try {
+                                    Geocoder geocoder = new Geocoder(SettingsActivity.this, Locale.getDefault());
+                                    List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+                                    String locationl = addresses.get(0).getCountryName() + ", "
+                                            + addresses.get(0).getAdminArea() + ", " + addresses.get(0).getLocality();
+                                    realLocation.setText(locationl);
+
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+
+                        }
+                    });
+
+                }else{
+                    ActivityCompat.requestPermissions(SettingsActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
+                }
+            }
+        }).start();
+
+    }
+
+
 
     private void showPhotoAccessWarning() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -236,7 +307,6 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -251,10 +321,6 @@ public class SettingsActivity extends AppCompatActivity {
         return image;
     }
 
-
-
-
-
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -262,58 +328,66 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void getUserInfo() {
-        mUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+        Runnable runnable = new Runnable() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists() && dataSnapshot.getChildrenCount()>0){
-                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                    if(map.get("name")!=null){
-                        name = map.get("name").toString();
-                        mNameField.setText(name);
-                    }
-                    if(map.get("location")!=null){
-                        location = map.get("location").toString();
-                        mLocationField.setText(location);
-                    }
-                    if(map.get("phone")!=null){
-                        phone = map.get("phone").toString();
-                        mPhoneField.setText(phone);
-                    }
-                    if(map.get("age")!=null){
-                        age = map.get("age").toString();
-                        mAgeField.setText(age);
-                    }
-                    if(map.get("race")!=null){
-                        race = map.get("race").toString();
-                        mRaceField.setText(race);
-                    }
-                    if(map.get("bio")!=null){
-                        bio = map.get("bio").toString();
-                        mBioField.setText(bio);
-                    }
-                    if(map.get("sex")!=null){
-                        userSex = map.get("sex").toString();
-                    }
-                    if(map.get("profileImageUrl")!=null){
-                        profileImageUrl = map.get("profileImageUrl").toString();
-                        switch(profileImageUrl){
-                            case "default":
-                                Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(mProfileImage);
-                                break;
-                            default:
-                                Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
-                                break;
+            public void run() {
+                mUserDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0) {
+                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                            if (map.get("name") != null) {
+                                name = map.get("name").toString();
+                                mNameField.setText(name);
+                            }
+                            if (map.get("location") != null) {
+                                location = map.get("location").toString();
+                                mLocationField.setText(location);
+                            }
+                            if (map.get("phone") != null) {
+                                phone = map.get("phone").toString();
+                                mPhoneField.setText(phone);
+                            }
+                            if (map.get("age") != null) {
+                                age = map.get("age").toString();
+                                mAgeField.setText(age);
+                            }
+                            if (map.get("race") != null) {
+                                race = map.get("race").toString();
+                                mRaceField.setText(race);
+                            }
+                            if (map.get("bio") != null) {
+                                bio = map.get("bio").toString();
+                                mBioField.setText(bio);
+                            }
+                            if (map.get("sex") != null) {
+                                userSex = map.get("sex").toString();
+                            }
+                            if (map.get("profileImageUrl") != null) {
+                                profileImageUrl = map.get("profileImageUrl").toString();
+                                switch (profileImageUrl) {
+                                    case "default":
+                                        Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(mProfileImage);
+                                        break;
+                                    default:
+                                        Glide.with(getApplication()).load(profileImageUrl).into(mProfileImage);
+                                        break;
+                                }
+                            }
+
                         }
                     }
 
-                }
-            }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    }
+                });
             }
-        });
+        };
+
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     private void saveUserInformation() {

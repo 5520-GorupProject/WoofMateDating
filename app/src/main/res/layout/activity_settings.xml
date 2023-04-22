@@ -106,6 +106,42 @@
                 android:textColor="#654814"
                 android:textColorHint="#654814" />
 
+            <TextView
+                android:id="@+id/cityLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingStart="26dp"
+                android:scrollHorizontally="true"
+                android:textSize="16dp"
+                android:visibility="gone"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/GetLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6.5dp"
+                    android:layout_marginEnd="6.5dp"
+                    android:layout_gravity="center_vertical" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Switch on to Get location"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="6.5dp"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
             <EditText
                 android:id="@+id/bio"
                 android:layout_width="match_parent"
