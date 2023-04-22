@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -353,6 +354,11 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(intent);
 //        finish();
 //    }
+
+        public void cameraUse(View view) {
+        Intent intent = new Intent(MainActivity.this, CameraAcitivity.class);
+        startActivity(intent);
+    }
 
 //    public void goToSettings(View view) {
 //        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
