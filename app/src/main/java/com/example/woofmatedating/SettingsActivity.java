@@ -494,23 +494,26 @@ public class SettingsActivity extends AppCompatActivity {
         return Uri.parse(path);
     }
 
-
-
     public void logoutUser(View view) {
-        mAuth.signOut();
-        Intent intent = new Intent(SettingsActivity.this, ChooseLoginRegistrationActivity.class);
-        startActivity(intent);
-        finish();
+        if (areAllFieldsFilled()){
+            mAuth.signOut();
+            Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }else {
+            Toast.makeText(SettingsActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onBackPressed() {
         if (areAllFieldsFilled()) {
-            super.onBackPressed();
+            Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
         } else {
             Toast.makeText(SettingsActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 }

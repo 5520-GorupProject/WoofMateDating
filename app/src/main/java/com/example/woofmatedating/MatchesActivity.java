@@ -142,8 +142,17 @@ public class MatchesActivity extends AppCompatActivity {
     }
 
 
+
     private ArrayList<MatchesObject> resultsMatches = new ArrayList<MatchesObject>();
     private List<MatchesObject> getDataSetMatches() {
         return resultsMatches;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(MatchesActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+        return;
     }
 }

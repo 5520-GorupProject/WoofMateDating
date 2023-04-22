@@ -75,7 +75,7 @@
                     android:gravity="center"
                     android:hint="Edit Name"
                     android:textColor="#654814"
-                    android:textColorHint="#654814" />
+                    android:textColorHint="#B2B2B2" />
             </LinearLayout>
 
             <LinearLayout
@@ -105,7 +105,7 @@
                     android:hint="Edit Phone"
                     android:inputType="phone"
                     android:textColor="#654814"
-                    android:textColorHint="#654814" />
+                    android:textColorHint="#B2B2B2" />
             </LinearLayout>
 
             <LinearLayout
@@ -134,7 +134,7 @@
                     android:hint="Edit Age"
                     android:inputType="text"
                     android:textColor="#654814"
-                    android:textColorHint="#654814" />
+                    android:textColorHint="#B2B2B2" />
             </LinearLayout>
 
             <LinearLayout
@@ -163,7 +163,7 @@
                     android:hint="Edit Race"
                     android:inputType="text"
                     android:textColor="#654814"
-                    android:textColorHint="#654814" />
+                    android:textColorHint="#B2B2B2" />
             </LinearLayout>
 
             <!--<EditText
@@ -259,7 +259,7 @@
                     android:hint="Your pet's short introduction"
                     android:inputType="text"
                     android:textColor="#654814"
-                    android:textColorHint="#654814" />
+                    android:textColorHint="#B2B2B2" />
             </LinearLayout>
         </LinearLayout>
 

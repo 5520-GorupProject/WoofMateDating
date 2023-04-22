@@ -366,4 +366,11 @@ public class MainActivity extends AppCompatActivity {
 //        return;
 //    }
 
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+        finish();
+    }
+
 }
