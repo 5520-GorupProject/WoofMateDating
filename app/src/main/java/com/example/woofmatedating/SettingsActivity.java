@@ -17,7 +17,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -91,6 +93,9 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView mLocationField;
     private SwitchMaterial getLocation;
 
+    private boolean isConfirmed = false;
+
+
     FusedLocationProviderClient fusedLocationProviderClient;
 
     private Uri imageUri;
@@ -143,8 +148,8 @@ public class SettingsActivity extends AppCompatActivity {
         nav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
 
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (!areAllFieldsFilled()) {
-                    Toast.makeText(SettingsActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                if (!isConfirmed) {
+                    Toast.makeText(SettingsActivity.this, "Please fill in all fields and click confirm", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 switch (item.getItemId()) {
@@ -179,14 +184,20 @@ public class SettingsActivity extends AppCompatActivity {
         });
 
 
+
+
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (areAllFieldsFilled()) {
                     saveUserInformation();
+
+                    isConfirmed = true;
+
 //                    Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
 //                    startActivity(intent);
                     Toast.makeText(SettingsActivity.this, "Settings done, Swipe for puppies!", Toast.LENGTH_SHORT).show();
+
                 } else {
                     Toast.makeText(SettingsActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 }
@@ -203,7 +214,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         });
-
+        
         final ActivityResultLauncher<Intent> cameraActivityResultLauncher =
                 registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                     if (result.getResultCode() == RESULT_OK) {
@@ -217,7 +228,39 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 });
 
+
+        addTextWatchers();
+
     }
+
+    private void addTextWatchers() {
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                isConfirmed = false;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        mNameField.addTextChangedListener(textWatcher);
+        mPhoneField.addTextChangedListener(textWatcher);
+        mRaceField.addTextChangedListener(textWatcher);
+        mAgeField.addTextChangedListener(textWatcher);
+        mBioField.addTextChangedListener(textWatcher);
+        mLocationField.addTextChangedListener(textWatcher);
+
+        
+
+
+    }
+
 
     private boolean areAllFieldsFilled() {
         return !TextUtils.isEmpty(mNameField.getText().toString()) &&
@@ -432,6 +475,10 @@ public class SettingsActivity extends AppCompatActivity {
                                 }
                             }
 
+                            if (areAllFieldsFilled()) {
+                                isConfirmed = true;
+                            }
+
                         }
                     }
 
@@ -541,13 +588,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (areAllFieldsFilled()) {
-            Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return;
+        if (isConfirmed) {
+            super.onBackPressed();
         } else {
-            Toast.makeText(SettingsActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SettingsActivity.this, "Please fill in all fields and confirm the information", Toast.LENGTH_SHORT).show();
         }
     }
 }
