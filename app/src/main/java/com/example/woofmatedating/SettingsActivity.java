@@ -191,6 +191,24 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
 
+    ///////////
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 44) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission granted, proceed to get the location
+                getLocation();
+            } else {
+                // Permission denied, display a message or disable the switch
+                getLocation.setChecked(false);
+                realLocation.setVisibility(View.GONE);
+                // You can show a message to the user to inform them that the permission is required
+            }
+        }
+    }
+
+
     private void getLocation(){
         realLocation.setVisibility(View.VISIBLE);
         new Thread(new Runnable() {
@@ -220,7 +238,7 @@ public class SettingsActivity extends AppCompatActivity {
                     });
 
                 }else{
-                    ActivityCompat.requestPermissions(SettingsActivity.this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},44);
+                    ActivityCompat.requestPermissions(SettingsActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
                 }
             }
         }).start();
