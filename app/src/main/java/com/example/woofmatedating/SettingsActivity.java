@@ -192,10 +192,11 @@ public class SettingsActivity extends AppCompatActivity {
 
                     isConfirmed = true;
 
-//                    Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
-//                    startActivity(intent);
+
                     Toast.makeText(SettingsActivity.this, "Settings done, Swipe for puppies!", Toast.LENGTH_SHORT).show();
 
+                    Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                    startActivity(intent);
                 } else {
                     Toast.makeText(SettingsActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 }
