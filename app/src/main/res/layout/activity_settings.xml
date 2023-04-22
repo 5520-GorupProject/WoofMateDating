@@ -9,13 +9,15 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:theme="@style/AppTheme"
-        app:titleTextColor="#E2CDB8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="WoofMate"
+        app:titleTextColor="#E2CDB8"
         tools:ignore="MissingClass">
 
     </com.google.android.material.appbar.MaterialToolbar>
@@ -31,13 +33,14 @@
         app:layout_constraintBottom_toTopOf="@+id/include2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
-
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.35000002">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
@@ -47,56 +50,125 @@
                 android:layout_marginBottom="20sp"
                 android:src="@drawable/_1_2" />
 
-            <EditText
-                android:id="@+id/name"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="15sp"
-                android:background="#d1c1ab"
-                android:gravity="center"
-                android:hint="Name"
-                android:textColor="#654814"
-                android:textColorHint="#654814" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="25dp"
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/phone"
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Name: "
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="240dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="7"
+                    android:layout_marginBottom="15sp"
+                    android:background="#d1c1ab"
+                    android:gravity="center"
+                    android:hint="Edit Name"
+                    android:textColor="#654814"
+                    android:textColorHint="#654814" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="15sp"
-                android:background="#d1c1ab"
-                android:gravity="center"
-                android:hint="Phone"
-                android:inputType="phone"
-                android:textColor="#654814"
-                android:textColorHint="#654814" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="25dp"
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/age"
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:text="Phone: "
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/phone"
+                    android:layout_width="240dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="7"
+                    android:layout_marginBottom="15sp"
+                    android:background="#d1c1ab"
+                    android:gravity="center"
+
+                    android:hint="Edit Phone"
+                    android:inputType="phone"
+                    android:textColor="#654814"
+                    android:textColorHint="#654814" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="15sp"
-                android:background="#d1c1ab"
-                android:gravity="center"
-                android:hint="Age"
-                android:inputType="text"
-                android:textColor="#654814"
-                android:textColorHint="#654814" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="25dp"
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/race"
+                <TextView
+                    android:layout_width="75dp"
+                    android:gravity="right"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Age: "
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/age"
+                    android:layout_width="240dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="7"
+                    android:layout_marginBottom="15sp"
+                    android:background="#d1c1ab"
+                    android:gravity="center"
+                    android:hint="Edit Age"
+                    android:inputType="text"
+                    android:textColor="#654814"
+                    android:textColorHint="#654814" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="15sp"
-                android:background="#d1c1ab"
-                android:gravity="center"
-                android:hint="Race"
-                android:inputType="text"
-                android:textColor="#654814"
-                android:textColorHint="#654814" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="25dp"
+                android:orientation="horizontal">
 
-            <EditText
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Race: "
+                    android:gravity="right"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/race"
+                    android:layout_width="240dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="7"
+                    android:layout_marginBottom="15sp"
+                    android:background="#d1c1ab"
+                    android:gravity="center"
+                    android:hint="Edit Race"
+                    android:inputType="text"
+                    android:textColor="#654814"
+                    android:textColorHint="#654814" />
+            </LinearLayout>
+
+            <!--<EditText
                 android:id="@+id/location"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="40dp"
                 android:layout_marginBottom="15sp"
                 android:background="#d1c1ab"
@@ -104,55 +176,91 @@
                 android:hint="Location"
                 android:inputType="text"
                 android:textColor="#654814"
-                android:textColorHint="#654814" />
-
-            <TextView
-                android:id="@+id/cityLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:focusableInTouchMode="true"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:paddingStart="26dp"
-                android:scrollHorizontally="true"
-                android:textSize="16dp"
-                android:visibility="gone"
-                />
-
+                android:textColorHint="#654814" />-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/GetLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginStart="6.5dp"
-                    android:layout_marginEnd="6.5dp"
-                    android:layout_gravity="center_vertical" />
+                    android:layout_marginEnd="6.5dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Switch on to Get location"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="6.5dp"
+                    android:text="Switch on to get location"
                     android:textSize="16sp" />
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/bio"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginBottom="15sp"
-                android:background="#d1c1ab"
-                android:gravity="center"
-                android:hint="Bio"
-                android:inputType="text"
-                android:textColor="#654814"
-                android:textColorHint="#654814" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="25dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Location: "
+                    android:gravity="right"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="240dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="7"
+                    android:layout_marginBottom="15sp"
+                    android:background="#d1c1ab"
+                    android:ellipsize="marquee"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:textColor="#654814"
+                    android:textSize="16dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="25dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_weight="1"
+                    android:text="Bio: "
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/bio"
+                    android:layout_width="240dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="7"
+                    android:layout_marginBottom="15sp"
+                    android:background="#d1c1ab"
+                    android:gravity="center"
+                    android:hint="Your pet's short introduction"
+                    android:inputType="text"
+                    android:textColor="#654814"
+                    android:textColorHint="#654814" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -185,8 +293,10 @@
     <include
         android:id="@+id/include2"
         layout="@layout/nav_bar"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
