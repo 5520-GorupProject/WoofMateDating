@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -115,6 +117,10 @@ public class SettingsActivity extends AppCompatActivity {
         nav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
 
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (!areAllFieldsFilled()) {
+                    Toast.makeText(SettingsActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
                 switch (item.getItemId()) {
                     case R.id.setting:
                         return true;
@@ -133,28 +139,7 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
-        /*final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<Instrumentation.ActivityResult>() {
-                    @Override
-                    public void onActivityResult(Instrumentation.ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getResultData();
-                            // Handle the result data here
-                        }
-                    }
-                }
-        );*/
 
-        /*final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        // Handle the result data here
-                    }
-                }
-        );*/
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,10 +156,13 @@ public class SettingsActivity extends AppCompatActivity {
         mConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                saveUserInformation();
-                Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
-                startActivity(intent);
-
+                if (areAllFieldsFilled()) {
+                    saveUserInformation();
+                    Intent intent = new Intent(SettingsActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(SettingsActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -189,6 +177,15 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean areAllFieldsFilled() {
+        return !TextUtils.isEmpty(mNameField.getText().toString()) &&
+                !TextUtils.isEmpty(mPhoneField.getText().toString()) &&
+                !TextUtils.isEmpty(mRaceField.getText().toString()) &&
+                !TextUtils.isEmpty(mAgeField.getText().toString()) &&
+                !TextUtils.isEmpty(mBioField.getText().toString()) &&
+                !TextUtils.isEmpty(mLocationField.getText().toString());
     }
 
     ///////////
@@ -505,5 +502,15 @@ public class SettingsActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (areAllFieldsFilled()) {
+            super.onBackPressed();
+        } else {
+            Toast.makeText(SettingsActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }
