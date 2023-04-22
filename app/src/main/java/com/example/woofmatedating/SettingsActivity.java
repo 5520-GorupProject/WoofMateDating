@@ -3,6 +3,7 @@ package com.example.woofmatedating;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,7 +25,10 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -48,6 +52,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -81,6 +90,24 @@ public class SettingsActivity extends AppCompatActivity {
     private SwitchMaterial getLocation;
 
     FusedLocationProviderClient fusedLocationProviderClient;
+
+   //***
+    private Uri imageUri;
+
+    // Declare ActivityResultLauncher
+    private final ActivityResultLauncher<Intent> cameraActivityResultLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                        mProfileImage.setImageBitmap(bitmap);
+                        resultUri = imageUri;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            });
 
 
     @Override
@@ -133,28 +160,7 @@ public class SettingsActivity extends AppCompatActivity {
                 return false;
             }
         });
-        /*final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<Instrumentation.ActivityResult>() {
-                    @Override
-                    public void onActivityResult(Instrumentation.ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            Intent data = result.getResultData();
-                            // Handle the result data here
-                        }
-                    }
-                }
-        );*/
 
-        /*final ActivityResultLauncher<Intent> resultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        // Handle the result data here
-                    }
-                }
-        );*/
 
         mProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,6 +194,19 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        final ActivityResultLauncher<Intent> cameraActivityResultLauncher =
+                registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                            mProfileImage.setImageBitmap(bitmap);
+                            resultUri = imageUri;
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
 
     }
 
@@ -295,33 +314,37 @@ public class SettingsActivity extends AppCompatActivity {
     private File photoFile;
 
     private void openCamera() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        PackageManager packageManager = getPackageManager();
-        List<ResolveInfo> activities = packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-        boolean isIntentSafe = activities.size() > 0;
+        Dexter.withContext(SettingsActivity.this)
+                .withPermissions(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                ).withListener(new MultiplePermissionsListener() {
 
-        if (isIntentSafe) {
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                Log.e("SettingsActivity", "Error creating image file: " + ex.getMessage());
-            }
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.woofmatedating.fileprovider",
-                        photoFile);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                Intent chooserIntent = Intent.createChooser(intent, "Select Camera App");
-                startActivityForResult(chooserIntent, 2);
-                Log.d("SettingsActivity", "Camera intent started");
-            } else {
-                Log.e("SettingsActivity", "Photo file is null");
-            }
-        } else {
-            Log.e("SettingsActivity", "No camera app found");
-        }
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                        if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                            ContentValues contentValues = new ContentValues();
+                            contentValues.put(MediaStore.Images.Media.TITLE, "New Pic");
+                            contentValues.put(MediaStore.Images.Media.DESCRIPTION, "New Pic");
+                            imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
+                            // Use the ActivityResultLauncher instead of the deprecated method
+                            cameraActivityResultLauncher.launch(intent);
+                        } else {
+                            Toast.makeText(SettingsActivity.this, "Need permission", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest(); // Continue asking for permissions
+                    }
+                }).check();
     }
+
 
 
 
@@ -490,12 +513,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
-    public Uri getImageUri(Context context, Bitmap bitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "Title", null);
-        return Uri.parse(path);
-    }
+
 
 
 

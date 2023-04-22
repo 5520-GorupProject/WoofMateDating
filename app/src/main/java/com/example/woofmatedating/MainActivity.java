@@ -354,11 +354,11 @@ public class MainActivity extends AppCompatActivity {
 //        startActivity(intent);
 //        finish();
 //    }
-
-        public void cameraUse(View view) {
-        Intent intent = new Intent(MainActivity.this, CameraAcitivity.class);
-        startActivity(intent);
-    }
+//
+//        public void cameraUse(View view) {
+//        Intent intent = new Intent(MainActivity.this, CameraAcitivity.class);
+//        startActivity(intent);
+//    }
 
 //    public void goToSettings(View view) {
 //        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
