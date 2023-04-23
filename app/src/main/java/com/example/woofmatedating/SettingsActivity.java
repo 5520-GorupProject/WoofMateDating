@@ -383,15 +383,20 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                         if (multiplePermissionsReport.areAllPermissionsGranted()) {
-                            ContentValues contentValues = new ContentValues();
-                            contentValues.put(MediaStore.Images.Media.TITLE, "New Pic");
-                            contentValues.put(MediaStore.Images.Media.DESCRIPTION, "New Pic");
-                            imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-
-                            // Use the ActivityResultLauncher instead of the deprecated method
-                            cameraActivityResultLauncher.launch(intent);
+                            Thread thread = new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ContentValues contentValues = new ContentValues();
+                                    contentValues.put(MediaStore.Images.Media.TITLE, "New Pic");
+                                    contentValues.put(MediaStore.Images.Media.DESCRIPTION, "New Pic");
+                                    imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                                    // Use the ActivityResultLauncher instead of the deprecated method
+                                    cameraActivityResultLauncher.launch(intent);
+                                }
+                            });
+                            thread.start();
                         } else {
                             Toast.makeText(SettingsActivity.this, "Need permission", Toast.LENGTH_SHORT).show();
                         }
@@ -403,6 +408,7 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                 }).check();
     }
+
 
 
 
