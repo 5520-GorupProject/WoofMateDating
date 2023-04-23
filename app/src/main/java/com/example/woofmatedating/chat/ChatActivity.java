@@ -149,8 +149,8 @@ public class ChatActivity extends AppCompatActivity {
                                     public void run() {
                                         //更新recyclerview
                                         mChatAdapter.notifyItemInserted(resultsChat.size() - 1);
-                                        //mRecyclerView.scrollToPosition(resultsChat.size() - 1);
-                                        mRecyclerView.scrollToPosition(0);
+                                        mRecyclerView.scrollToPosition(resultsChat.size() - 1);
+                                        //mRecyclerView.scrollToPosition(0);
                                     }
                                 });
                             }

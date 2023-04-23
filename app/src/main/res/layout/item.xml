@@ -13,7 +13,7 @@
             android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.80"
+            app:layout_constraintHeight_percent="0.95"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -36,60 +36,113 @@
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="10dp"/>
-
-                <ImageView
-                    android:id="@+id/photo"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_share"
-                    android:layout_marginLeft="250dp"
-                    android:scaleType="fitXY" />
+                    android:layout_marginBottom="5dp"/>
 
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:orientation="horizontal">
                 <TextView
                     android:id="@+id/name"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center|left"
+                    android:gravity="left"
+                    android:layout_weight="2"
                     android:paddingLeft="20sp"
                     android:textColor="#654814"
                     android:textColorHint="#654814"
                     android:textSize="30sp"
+                    android:textStyle="bold|italic"
                     tools:text="hello" />
+                <ImageView
+                    android:id="@+id/photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_share"
+                    android:scaleType="fitXY" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/baseline_location_on_24"
+                    android:paddingStart="20dp"
+                    android:scaleType="fitXY" />
                 <TextView
                     android:id="@+id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:paddingLeft="5dp"
+                    android:textColor="#654814"
+                    android:textColorHint="#654814"
+                    android:textSize="18sp"
+                    tools:text="location"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/ageT"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="center|left"
                     android:paddingLeft="20sp"
                     android:textColor="#654814"
                     android:textColorHint="#654814"
                     android:textSize="20sp"
-                    tools:text="location" />
-
-                <TextView
+                    tools:text="Age:" />
+            <TextView
                     android:id="@+id/age"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center|left"
-                    android:paddingLeft="20sp"
+                    android:layout_weight="2"
+                    android:gravity="left"
                     android:textColor="#654814"
                     android:textColorHint="#654814"
                     android:textSize="20sp"
                     tools:text="age" />
 
                 <TextView
-                    android:id="@+id/race"
-                    android:layout_width="match_parent"
+                    android:id="@+id/raceT"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="right"
+
+                    android:textColor="#654814"
+                    android:textColorHint="#654814"
+                    android:textSize="20sp"
+                    tools:text="Race:   " />
+                <TextView
+                    android:id="@+id/race"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="4"
                     android:gravity="center|left"
-                    android:paddingLeft="20sp"
+
                     android:textColor="#654814"
                     android:textColorHint="#654814"
                     android:textSize="20sp"
                     tools:text="race" />
+            </LinearLayout>
 
                 <TextView
                     android:id="@+id/bio"
@@ -99,8 +152,12 @@
                     android:paddingLeft="20sp"
                     android:textColor="#654814"
                     android:textColorHint="#654814"
-                    android:textSize="20sp"
-                    tools:text="bio" />
+                    android:textSize="24sp"
+                    android:textStyle="italic"
+                    tools:text="bio"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"/>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>

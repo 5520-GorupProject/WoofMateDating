@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 usersDb.child(userId).child("connections").child("dislike").child(currentUId).setValue(true);
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
-                Toast.makeText(MainActivity.this, "Left Dislike", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Left Dislike", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
                 String userId = obj.getUserId();
                 usersDb.child(userId).child("connections").child("like").child(currentUId).setValue(true);
                 isConnectionMatch(userId);
-                Toast.makeText(MainActivity.this, "Right Like", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Right Like", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -199,9 +199,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-
 
 
 

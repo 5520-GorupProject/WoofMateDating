@@ -30,15 +30,19 @@ public class arrayAdapter extends ArrayAdapter<cards> {
 
         TextView name = (TextView) convertView.findViewById(R.id.name);
         TextView age = (TextView) convertView.findViewById(R.id.age);
+        TextView ageT = (TextView) convertView.findViewById(R.id.ageT);
         TextView race = (TextView) convertView.findViewById(R.id.race);
+        TextView raceT = (TextView) convertView.findViewById(R.id.raceT);
         TextView bio = (TextView) convertView.findViewById(R.id.bio);
         TextView location = (TextView) convertView.findViewById(R.id.location);
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
 
         name.setText(card_item.getName());
         age.setText(card_item.getAge());
+        ageT.setText("Age:");
         race.setText(card_item.getRace());
-        bio.setText(card_item.getBio());
+        raceT.setText("Race:   ");
+        bio.setText("\""+card_item.getBio()+"\"");
         location.setText(card_item.getLocation());
         switch(card_item.getProfileImageUrl()){
             case "default":

@@ -32,7 +32,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:paddingBottom="20sp"
-            android:text="Match's Name"
+            android:text=" "
             android:textColor="#E2CDB8"
             android:textColorHint="#E2CDB8"
             android:textSize="15dp" />

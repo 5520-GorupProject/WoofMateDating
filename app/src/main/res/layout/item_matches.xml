@@ -17,22 +17,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center">
+
         <TextView
-            android:paddingBottom="20sp"
+            android:id="@+id/MatchName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingBottom="10sp"
+            android:text="Match's Name"
             android:textColor="#654814"
             android:textColorHint="#654814"
-            android:text="Match's Name"
-            android:id="@+id/MatchName"/>
-        <TextView
+            android:textSize="20sp" />
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#654814"
             android:textColorHint="#654814"
             android:text="Match's ID"
             android:layout_gravity="center"
-            android:id="@+id/Matchid"/>
+            android:id="@+id/Matchid"/>-->
     </LinearLayout>
 
 </LinearLayout>

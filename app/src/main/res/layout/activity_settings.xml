@@ -101,7 +101,6 @@
                     android:layout_marginBottom="15sp"
                     android:background="#d1c1ab"
                     android:gravity="center"
-
                     android:hint="Edit Phone"
                     android:inputType="phone"
                     android:textColor="#654814"
@@ -224,10 +223,10 @@
                     android:layout_marginBottom="15sp"
                     android:background="#d1c1ab"
                     android:ellipsize="marquee"
-                    android:focusableInTouchMode="true"
-                    android:gravity="center"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
+                    android:focusableInTouchMode="true"
+                    android:gravity="center"
                     android:textColor="#654814"
                     android:textSize="16dp" />
             </LinearLayout>

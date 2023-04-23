@@ -594,7 +594,10 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (isConfirmed) {
-            super.onBackPressed();
+            Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
         } else {
             Toast.makeText(SettingsActivity.this, "Please fill in all fields and confirm the information", Toast.LENGTH_SHORT).show();
         }
