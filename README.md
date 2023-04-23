@@ -4,8 +4,11 @@
 
 Team 3: Chang Yu, Siting Tang, Xun Zhu, Zongling Guo
 
-## Video demo
+## Slides
 https://docs.google.com/presentation/d/10tbV9TQQv-mU3XpmI4Y43jRGmkqp72gQNZfI36BJtFU/edit?usp=sharing
+
+## Video demo
+https://clipchamp.com/watch/gYn7ViuCQhw
 
 ## Intro & Overview
 Woof Mate is the ultimate app for finding your pet dog's partner. Simply create a profile for your dog
