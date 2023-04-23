@@ -141,6 +141,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("LIST", "removed object!");
                 rowItems.remove(0);
                 arrayAdapter.notifyDataSetChanged();
+                if (rowItems.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "No more cards available", Toast.LENGTH_SHORT).show();
+                }
             }
 
 
@@ -166,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
-                // Ask for more data here
+
             }
 
             @Override
