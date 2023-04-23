@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private String currentUId;
 
+    private ImageButton dislikeButton;
+    private ImageButton likeButton;
+
     //users
     private DatabaseReference usersDb;
 
@@ -59,6 +64,21 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView nav;
 
+    private void onLeftCardExitLogic() {
+        cards obj = rowItems.get(0);
+        String userId = obj.getUserId();
+        usersDb.child(userId).child("connections").child("dislike").child(currentUId).setValue(true);
+        Toast.makeText(MainActivity.this, "Left Dislike", Toast.LENGTH_SHORT).show();
+    }
+
+    private void onRightCardExitLogic() {
+        cards obj = rowItems.get(0);
+        String userId = obj.getUserId();
+        usersDb.child(userId).child("connections").child("like").child(currentUId).setValue(true);
+        isConnectionMatch(userId);
+        Toast.makeText(MainActivity.this, "Right Like", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +90,10 @@ public class MainActivity extends AppCompatActivity {
         //ButterKnife.inject(this);
         nav = findViewById(R.id.navBar);
         nav.setSelectedItemId(R.id.home);
+
+        dislikeButton = findViewById(R.id.dislike_button);
+        likeButton = findViewById(R.id.like_button);
+
         nav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
 
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -106,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
         flingContainer.setAdapter(arrayAdapter);
+
+
+
+
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
@@ -114,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                 rowItems.remove(0);
                 arrayAdapter.notifyDataSetChanged();
             }
+
 
             //store user's choice to the firebase
             @Override
@@ -148,6 +177,34 @@ public class MainActivity extends AppCompatActivity {
                 view.findViewById(R.id.item_swipe_left_indicator).setAlpha(scrollProgressPercent > 0 ? scrollProgressPercent : 0);*/
             }
         });
+
+
+
+        dislikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!rowItems.isEmpty()) {
+                    onLeftCardExitLogic();
+                    flingContainer.getTopCardListener().selectLeft();
+                }
+            }
+        });
+
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!rowItems.isEmpty()) {
+                    onRightCardExitLogic();
+                    flingContainer.getTopCardListener().selectRight();
+                }
+            }
+        });
+
+
+
+
+
+
 
 
         // Optionally add an OnItemClickListener
