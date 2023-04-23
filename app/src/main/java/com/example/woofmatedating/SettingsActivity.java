@@ -146,7 +146,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (!isConfirmed) {
-                    Toast.makeText(SettingsActivity.this, "Please fill in all fields and click confirm", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingsActivity.this, "Please click confirm first", Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 switch (item.getItemId()) {
@@ -599,7 +599,7 @@ public class SettingsActivity extends AppCompatActivity {
             finish();
             return;
         } else {
-            Toast.makeText(SettingsActivity.this, "Please fill in all fields and confirm the information", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SettingsActivity.this, "Please confirm the information first", Toast.LENGTH_SHORT).show();
         }
     }
 }
