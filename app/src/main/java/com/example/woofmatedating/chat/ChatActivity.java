@@ -42,6 +42,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private ImageButton mSendButton;
 
+    public static boolean isActivityVisible;
+
     DatabaseReference mDatabaseUser, mDatabaseChat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,7 +166,7 @@ public class ChatActivity extends AppCompatActivity {
                                     manager.createNotificationChannel(channel);
                                 }
 
-                                if(!currentUserBoolean) { // only show notification for other user's messages
+                                if(!currentUserBoolean && !isActivityVisible) { // only show notification for other user's messages
                                     NotificationCompat.Builder builder = new NotificationCompat.Builder(ChatActivity.this, "Message Notify")
                                             .setSmallIcon(R.drawable.ic_chat)
                                             .setContentTitle("New Message")
@@ -203,5 +205,16 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<ChatObject> resultsChat = new ArrayList<ChatObject>();
     private List<ChatObject> getDataSetChat() {
         return resultsChat;
+    }
+
+    protected void onResume() {
+        super.onResume();
+        isActivityVisible = true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isActivityVisible = false;
     }
 }
