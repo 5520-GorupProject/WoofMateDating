@@ -28,14 +28,15 @@
             android:textColor="#654814"
             android:textColorHint="#654814"
             android:textSize="20sp" />
-        <!--<TextView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#654814"
             android:textColorHint="#654814"
             android:text="Match's ID"
             android:layout_gravity="center"
-            android:id="@+id/Matchid"/>-->
+            android:id="@+id/Matchid"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </LinearLayout>
