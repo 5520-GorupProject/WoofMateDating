@@ -2,9 +2,14 @@ package com.example.woofmatedating.chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -118,6 +123,7 @@ public class ChatActivity extends AppCompatActivity {
         }).start();
     }
 
+
     private void getChatMessages() {
         new Thread(new Runnable() {
             @Override
@@ -144,15 +150,34 @@ public class ChatActivity extends AppCompatActivity {
                                 ChatObject newMessage = new ChatObject(message, currentUserBoolean);
                                 resultsChat.add(newMessage);
 
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
+//                                runOnUiThread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
                                         //更新recyclerview
                                         mChatAdapter.notifyItemInserted(resultsChat.size() - 1);
                                         mRecyclerView.scrollToPosition(resultsChat.size() - 1);
                                         //mRecyclerView.scrollToPosition(0);
+
+                                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                                    NotificationChannel channel = new NotificationChannel("Message Notify", "New Message", NotificationManager.IMPORTANCE_DEFAULT);
+                                    NotificationManager manager = getSystemService(NotificationManager.class);
+                                    manager.createNotificationChannel(channel);
+                                }
+
+                                if(!currentUserBoolean) { // only show notification for other user's messages
+                                    NotificationCompat.Builder builder = new NotificationCompat.Builder(ChatActivity.this, "Message Notify")
+                                            .setSmallIcon(R.drawable.ic_chat)
+                                            .setContentTitle("New Message")
+                                            .setContentText(message)
+                                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+                                    NotificationManagerCompat notificationManager = NotificationManagerCompat.from(ChatActivity.this);
+                                    notificationManager.notify(1, builder.build());
+//                                }
+
+
                                     }
-                                });
+//                                });
                             }
                         }
                     }
