@@ -64,20 +64,20 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView nav;
 
-    private void onLeftCardExitLogic() {
-        cards obj = rowItems.get(0);
-        String userId = obj.getUserId();
-        usersDb.child(userId).child("connections").child("dislike").child(currentUId).setValue(true);
-        Toast.makeText(MainActivity.this, "Left Dislike", Toast.LENGTH_SHORT).show();
-    }
-
-    private void onRightCardExitLogic() {
-        cards obj = rowItems.get(0);
-        String userId = obj.getUserId();
-        usersDb.child(userId).child("connections").child("like").child(currentUId).setValue(true);
-        isConnectionMatch(userId);
-        Toast.makeText(MainActivity.this, "Right Like", Toast.LENGTH_SHORT).show();
-    }
+//    private void onLeftCardExitLogic() {
+//        cards obj = rowItems.get(0);
+//        String userId = obj.getUserId();
+//        usersDb.child(userId).child("connections").child("dislike").child(currentUId).setValue(true);
+//        Toast.makeText(MainActivity.this, "Left Dislike", Toast.LENGTH_SHORT).show();
+//    }
+//
+//    private void onRightCardExitLogic() {
+//        cards obj = rowItems.get(0);
+//        String userId = obj.getUserId();
+//        usersDb.child(userId).child("connections").child("like").child(currentUId).setValue(true);
+//        isConnectionMatch(userId);
+//        Toast.makeText(MainActivity.this, "Right Like", Toast.LENGTH_SHORT).show();
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!rowItems.isEmpty()) {
-                    onLeftCardExitLogic();
+//                    onLeftCardExitLogic();
                     flingContainer.getTopCardListener().selectLeft();
                 }
             }
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!rowItems.isEmpty()) {
-                    onRightCardExitLogic();
+//                    onRightCardExitLogic();
                     flingContainer.getTopCardListener().selectRight();
                 }
             }
