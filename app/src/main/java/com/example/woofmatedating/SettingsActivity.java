@@ -55,8 +55,11 @@ import com.google.firebase.storage.UploadTask;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -371,8 +374,42 @@ public class SettingsActivity extends AppCompatActivity {
 
 
     private File photoFile;
-
     private void openCamera() {
+        Dexter.withContext(SettingsActivity.this)
+                .withPermission(Manifest.permission.CAMERA)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
+                        // Permission granted, proceed with opening the camera
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ContentValues contentValues = new ContentValues();
+                                contentValues.put(MediaStore.Images.Media.TITLE, "New Pic");
+                                contentValues.put(MediaStore.Images.Media.DESCRIPTION, "New Pic");
+                                imageUri = getContentResolver().insert(MediaStore.Images.Media.getContentUri("external"), contentValues);
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                                // Use the ActivityResultLauncher instead of the deprecated method
+                                cameraActivityResultLauncher.launch(intent);
+                            }
+                        });
+                        thread.start();
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
+                        // Permission denied, show a message
+                        Toast.makeText(SettingsActivity.this, "Need permission", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest(); // Continue asking for permissions
+                    }
+                }).check();
+    }
+    /*private void openCamera() {
         Dexter.withContext(SettingsActivity.this)
                 .withPermissions(
                         Manifest.permission.CAMERA,
@@ -383,20 +420,20 @@ public class SettingsActivity extends AppCompatActivity {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
                         if (multiplePermissionsReport.areAllPermissionsGranted()) {
-                            Thread thread = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
+                            //Thread thread = new Thread(new Runnable() {
+                               // @Override
+                                //public void run() {
                                     ContentValues contentValues = new ContentValues();
                                     contentValues.put(MediaStore.Images.Media.TITLE, "New Pic");
                                     contentValues.put(MediaStore.Images.Media.DESCRIPTION, "New Pic");
                                     imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE_SECURE);
                                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                                     // Use the ActivityResultLauncher instead of the deprecated method
                                     cameraActivityResultLauncher.launch(intent);
-                                }
-                            });
-                            thread.start();
+                               // }
+                            //});
+                            //thread.start();
                         } else {
                             Toast.makeText(SettingsActivity.this, "Need permission", Toast.LENGTH_SHORT).show();
                         }
@@ -407,9 +444,7 @@ public class SettingsActivity extends AppCompatActivity {
                         permissionToken.continuePermissionRequest(); // Continue asking for permissions
                     }
                 }).check();
-    }
-
-
+    }*/
 
 
     private File createImageFile() throws IOException {
