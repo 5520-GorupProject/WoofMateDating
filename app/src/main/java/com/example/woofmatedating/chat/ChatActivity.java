@@ -49,6 +49,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        isActivityVisible = true;
 
         matchId = getIntent().getExtras().getString("matchId");
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -215,6 +216,13 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        isActivityVisible = false;
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         isActivityVisible = false;
     }
 }
